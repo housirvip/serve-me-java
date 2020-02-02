@@ -6,7 +6,7 @@ spring:
   application:
     name: serve-me
   datasource:
-    url: jdbc:mysql://localhost:3306/movie-talk?characterEncoding=utf8&autoReconnect=true&useSSL=false
+    url: jdbc:mysql://localhost:3306/serve-me?characterEncoding=utf8&autoReconnect=true&useSSL=false
     driver-class-name: com.mysql.cj.jdbc.Driver
     username: root
     password: housirvip
@@ -21,8 +21,7 @@ mybatis:
 logging:
   level:
     root: info
-    edu.uta.movietalk.client: debug
-    edu.uta.movietalk.mapper: debug
+#    edu.uta.cse.serveme.mapper: debug
 
 pagehelper:
   helperDialect: mysql

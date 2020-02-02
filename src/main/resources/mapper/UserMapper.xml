@@ -13,7 +13,7 @@
     <result column="level" jdbcType="INTEGER" property="level" />
   </resultMap>
   <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs" type="edu.uta.cse.serveme.entity.User">
-    <result column="role" jdbcType="LONGVARCHAR" property="role" typeHandler="edu.uta.movietalk.typehandler.ListTypeHandler" />
+    <result column="role" jdbcType="LONGVARCHAR" property="role" typeHandler="edu.uta.cse.serveme.typehandler.ListTypeHandler" />
   </resultMap>
   <sql id="Base_Column_List">
     id, username, email, phone, password, create_time, update_time, enable, level
@@ -80,7 +80,7 @@
       )
     values (#{username,jdbcType=VARCHAR}, #{email,jdbcType=VARCHAR}, #{phone,jdbcType=VARCHAR}, 
       #{password,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP}, 
-      #{enable,jdbcType=BIT}, #{level,jdbcType=INTEGER}, #{role,jdbcType=LONGVARCHAR,typeHandler=edu.uta.movietalk.typehandler.ListTypeHandler}
+      #{enable,jdbcType=BIT}, #{level,jdbcType=INTEGER}, #{role,jdbcType=LONGVARCHAR,typeHandler=edu.uta.cse.serveme.typehandler.ListTypeHandler}
       )
   </insert>
   <insert id="insertSelective" parameterType="edu.uta.cse.serveme.entity.User">
@@ -143,7 +143,7 @@
         #{level,jdbcType=INTEGER},
       </if>
       <if test="role != null">
-        #{role,jdbcType=LONGVARCHAR,typeHandler=edu.uta.movietalk.typehandler.ListTypeHandler},
+        #{role,jdbcType=LONGVARCHAR,typeHandler=edu.uta.cse.serveme.typehandler.ListTypeHandler},
       </if>
     </trim>
   </insert>
@@ -175,7 +175,7 @@
         level = #{level,jdbcType=INTEGER},
       </if>
       <if test="role != null">
-        role = #{role,jdbcType=LONGVARCHAR,typeHandler=edu.uta.movietalk.typehandler.ListTypeHandler},
+        role = #{role,jdbcType=LONGVARCHAR,typeHandler=edu.uta.cse.serveme.typehandler.ListTypeHandler},
       </if>
     </set>
     where id = #{id,jdbcType=INTEGER}
@@ -190,7 +190,7 @@
       update_time = #{updateTime,jdbcType=TIMESTAMP},
       enable = #{enable,jdbcType=BIT},
       level = #{level,jdbcType=INTEGER},
-      role = #{role,jdbcType=LONGVARCHAR,typeHandler=edu.uta.movietalk.typehandler.ListTypeHandler}
+      role = #{role,jdbcType=LONGVARCHAR,typeHandler=edu.uta.cse.serveme.typehandler.ListTypeHandler}
     where id = #{id,jdbcType=INTEGER}
   </update>
   <update id="updateByPrimaryKey" parameterType="edu.uta.cse.serveme.entity.User">

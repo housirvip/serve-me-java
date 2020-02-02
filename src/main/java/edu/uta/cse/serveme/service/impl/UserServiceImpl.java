@@ -83,6 +83,7 @@ public class UserServiceImpl implements UserService {
 
         UserInfo userInfo = new UserInfo();
         userInfo.setUid(user.getId());
+        userInfo.setCreateTime(new Date());
         userInfoMapper.insertSelective(userInfo);
 
         return jwtUtils.encode(user.getId(), user.getRole());
@@ -101,7 +102,7 @@ public class UserServiceImpl implements UserService {
         user.setPassword(null);
         UserInfo userInfo = userInfoMapper.selectByUid(uid);
         user.setUserInfo(userInfo);
-        return null;
+        return user;
     }
 
     @Override

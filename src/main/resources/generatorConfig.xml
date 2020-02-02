@@ -78,12 +78,12 @@
                enableDeleteByExample="false" enableSelectByExample="false" selectByExampleQueryId="false">
             <generatedKey column="id" sqlStatement="MySql" identity="true"/>
             <columnOverride column="role" javaType="java.util.List"
-                            typeHandler="edu.uta.movietalk.typehandler.ListTypeHandler"/>
+                            typeHandler="edu.uta.cse.serveme.typehandler.ListTypeHandler"/>
         </table>
 
-        <table tableName="user_info" enableCountByExample="false" enableUpdateByExample="false"
-               enableDeleteByExample="false" enableSelectByExample="false" selectByExampleQueryId="false">
-            <generatedKey column="id" sqlStatement="MySql" identity="true"/>
-        </table>
+<!--        <table tableName="user_info" enableCountByExample="false" enableUpdateByExample="false"-->
+<!--               enableDeleteByExample="false" enableSelectByExample="false" selectByExampleQueryId="false">-->
+<!--            <generatedKey column="id" sqlStatement="MySql" identity="true"/>-->
+<!--        </table>-->
     </context>
 </generatorConfiguration>
