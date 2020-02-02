@@ -6,10 +6,9 @@ spring:
   application:
     name: serve-me
   datasource:
-    url: jdbc:mysql://localhost:3306/serve-me?characterEncoding=utf8&autoReconnect=true&useSSL=false
+    url: jdbc:mysql://b0ca137662bb15:a9a32f33@us-cdbr-iron-east-04.cleardb.net/heroku_cd8ae15d3c01db0?reconnect=true
+#    url: jdbc:mysql://root:housirvip@localhost:3306/serve-me?characterEncoding=utf8&autoReconnect=true&useSSL=false
     driver-class-name: com.mysql.cj.jdbc.Driver
-    username: root
-    password: housirvip
   jackson:
     default-property-inclusion: NON_NULL
     date-format: yyyy-MM-dd HH:mm:ss
