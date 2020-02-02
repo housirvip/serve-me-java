@@ -1,0 +1,50 @@
+server:
+  port: 8000
+  address:
+
+spring:
+  application:
+    name: serve-me
+  datasource:
+    url: jdbc:mysql://localhost:3306/movie-talk?characterEncoding=utf8&autoReconnect=true&useSSL=false
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    username: root
+    password: housirvip
+  jackson:
+    default-property-inclusion: NON_NULL
+    date-format: yyyy-MM-dd HH:mm:ss
+    time-zone: GMT-5
+
+mybatis:
+  mapper-locations: classpath:mapper/*.xml
+
+logging:
+  level:
+    root: info
+    edu.uta.movietalk.client: debug
+    edu.uta.movietalk.mapper: debug
+
+pagehelper:
+  helperDialect: mysql
+  offsetAsPageNum: true
+  pageSizeZero: true
+  #    reasonable: true
+  #    supportMethodsArguments: true
+  rowBoundsWithCount: true
+
+# custom defined params
+user:
+  role: USER
+  group: User
+  level: 0
+
+jwt:
+  secret: changeIt
+  expire: 21600000
+  delay: 60
+
+cors:
+  path: /**
+  origins: http://localhost:8080,http://localhost:4200,http://localhost:9090
+  methods: GET,POST,PUT,DELETE,HEAD,OPTIONS
+  headers: Content-Type,Authorization,credential,X-XSRF-TOKEN

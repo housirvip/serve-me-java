@@ -1,0 +1,240 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="edu.uta.cse.serveme.mapper.UserMapper">
+  <resultMap id="BaseResultMap" type="edu.uta.cse.serveme.entity.User">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="username" jdbcType="VARCHAR" property="username" />
+    <result column="email" jdbcType="VARCHAR" property="email" />
+    <result column="phone" jdbcType="VARCHAR" property="phone" />
+    <result column="password" jdbcType="VARCHAR" property="password" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+    <result column="enable" jdbcType="BIT" property="enable" />
+    <result column="level" jdbcType="INTEGER" property="level" />
+  </resultMap>
+  <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs" type="edu.uta.cse.serveme.entity.User">
+    <result column="role" jdbcType="LONGVARCHAR" property="role" typeHandler="edu.uta.movietalk.typehandler.ListTypeHandler" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, username, email, phone, password, create_time, update_time, enable, level
+  </sql>
+  <sql id="Blob_Column_List">
+    role
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="ResultMapWithBLOBs">
+    select 
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from user
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <select id="selcectByUsername" parameterType="java.lang.String" resultMap="ResultMapWithBLOBs">
+    select
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from user
+    where username = #{username,jdbcType=VARCHAR}
+  </select>
+  <select id="existUsername" resultType="java.lang.Boolean">
+    select 1
+    from user
+    where username = #{username,jdbcType=VARCHAR}
+    limit 1
+  </select>
+  <select id="existEmail" resultType="java.lang.Boolean">
+    select 1
+    from user
+    where email = #{email,jdbcType=VARCHAR}
+    limit 1
+  </select>
+  <select id="existPhone" resultType="java.lang.Boolean">
+    select 1
+    from user
+    where phone = #{phone,jdbcType=VARCHAR}
+    limit 1
+  </select>
+  <select id="listByParam" parameterType="map" resultMap="ResultMapWithBLOBs">
+    select
+    <include refid="Base_Column_List"/>
+    ,
+    <include refid="Blob_Column_List"/>
+    from user
+    <where>
+      <include refid="search"/>
+    </where>
+    <include refid="order"/>
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from user
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="edu.uta.cse.serveme.entity.User">
+    <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Integer">
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into user (username, email, phone, 
+      password, create_time, update_time, 
+      enable, level, role
+      )
+    values (#{username,jdbcType=VARCHAR}, #{email,jdbcType=VARCHAR}, #{phone,jdbcType=VARCHAR}, 
+      #{password,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP}, 
+      #{enable,jdbcType=BIT}, #{level,jdbcType=INTEGER}, #{role,jdbcType=LONGVARCHAR,typeHandler=edu.uta.movietalk.typehandler.ListTypeHandler}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="edu.uta.cse.serveme.entity.User">
+    <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Integer">
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into user
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="username != null">
+        username,
+      </if>
+      <if test="email != null">
+        email,
+      </if>
+      <if test="phone != null">
+        phone,
+      </if>
+      <if test="password != null">
+        password,
+      </if>
+      <if test="createTime != null">
+        create_time,
+      </if>
+      <if test="updateTime != null">
+        update_time,
+      </if>
+      <if test="enable != null">
+        enable,
+      </if>
+      <if test="level != null">
+        level,
+      </if>
+      <if test="role != null">
+        role,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="username != null">
+        #{username,jdbcType=VARCHAR},
+      </if>
+      <if test="email != null">
+        #{email,jdbcType=VARCHAR},
+      </if>
+      <if test="phone != null">
+        #{phone,jdbcType=VARCHAR},
+      </if>
+      <if test="password != null">
+        #{password,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null">
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null">
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="enable != null">
+        #{enable,jdbcType=BIT},
+      </if>
+      <if test="level != null">
+        #{level,jdbcType=INTEGER},
+      </if>
+      <if test="role != null">
+        #{role,jdbcType=LONGVARCHAR,typeHandler=edu.uta.movietalk.typehandler.ListTypeHandler},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="edu.uta.cse.serveme.entity.User">
+    update user
+    <set>
+      <if test="username != null">
+        username = #{username,jdbcType=VARCHAR},
+      </if>
+      <if test="email != null">
+        email = #{email,jdbcType=VARCHAR},
+      </if>
+      <if test="phone != null">
+        phone = #{phone,jdbcType=VARCHAR},
+      </if>
+      <if test="password != null">
+        password = #{password,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null">
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null">
+        update_time = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="enable != null">
+        enable = #{enable,jdbcType=BIT},
+      </if>
+      <if test="level != null">
+        level = #{level,jdbcType=INTEGER},
+      </if>
+      <if test="role != null">
+        role = #{role,jdbcType=LONGVARCHAR,typeHandler=edu.uta.movietalk.typehandler.ListTypeHandler},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKeyWithBLOBs" parameterType="edu.uta.cse.serveme.entity.User">
+    update user
+    set username = #{username,jdbcType=VARCHAR},
+      email = #{email,jdbcType=VARCHAR},
+      phone = #{phone,jdbcType=VARCHAR},
+      password = #{password,jdbcType=VARCHAR},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      update_time = #{updateTime,jdbcType=TIMESTAMP},
+      enable = #{enable,jdbcType=BIT},
+      level = #{level,jdbcType=INTEGER},
+      role = #{role,jdbcType=LONGVARCHAR,typeHandler=edu.uta.movietalk.typehandler.ListTypeHandler}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="edu.uta.cse.serveme.entity.User">
+    update user
+    set username = #{username,jdbcType=VARCHAR},
+      email = #{email,jdbcType=VARCHAR},
+      phone = #{phone,jdbcType=VARCHAR},
+      password = #{password,jdbcType=VARCHAR},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      update_time = #{updateTime,jdbcType=TIMESTAMP},
+      enable = #{enable,jdbcType=BIT},
+      level = #{level,jdbcType=INTEGER}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <sql id="search">
+    <if test="username != null and username!=''">
+      and username like CONCAT('%',#{username,jdbcType=VARCHAR},'%')
+    </if>
+    <if test="email != null and email!=''">
+      and email like CONCAT('%',#{email,jdbcType=VARCHAR},'%')
+    </if>
+    <if test="phone != null and phone!=''">
+      and phone like CONCAT('%',#{phone,jdbcType=VARCHAR},'%')
+    </if>
+  </sql>
+  <sql id="order">
+    <if test="orderBy != null and orderBy!=''">
+      order by
+      <if test="orderBy == 'createTime'">
+        create_time
+      </if>
+      <if test="orderBy == 'level'">
+        level
+      </if>
+      <if test="orderBy == 'enable'">
+        enable
+      </if>
+      <!-- order type -->
+      <if test="orderType == 'desc'">
+        desc
+      </if>
+      <if test="orderType == 'asc'">
+        asc
+      </if>
+    </if>
+  </sql>
+</mapper>
