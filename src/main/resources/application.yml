@@ -8,6 +8,9 @@ spring:
   datasource:
     url: jdbc:${CLEARDB_DATABASE_URL}
     driver-class-name: com.mysql.cj.jdbc.Driver
+    hikari:
+      # default is 1800000
+      max-lifetime: 600000
   jackson:
     default-property-inclusion: NON_NULL
     date-format: yyyy-MM-dd HH:mm:ss
