@@ -45,6 +45,6 @@ jwt:
 
 cors:
   path: /**
-  origins: http://localhost:8100,http://localhost:4200,http://localhost
+  origins: http://localhost:8100,http://localhost:4200,http://localhost,capacitor://localhost,ionic://localhost
   methods: GET,POST,PUT,DELETE,HEAD,OPTIONS
   headers: Content-Type,Authorization,credential,X-XSRF-TOKEN
