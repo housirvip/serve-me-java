@@ -5,11 +5,12 @@ import com.google.common.base.Preconditions;
 import com.google.common.collect.Lists;
 import edu.uta.cse.serveme.constant.Constant;
 import edu.uta.cse.serveme.constant.ErrorMessage;
-import edu.uta.cse.serveme.constant.UserGroup;
 import edu.uta.cse.serveme.entity.User;
 import edu.uta.cse.serveme.entity.UserInfo;
+import edu.uta.cse.serveme.entity.UserToken;
 import edu.uta.cse.serveme.mapper.UserInfoMapper;
 import edu.uta.cse.serveme.mapper.UserMapper;
+import edu.uta.cse.serveme.mapper.UserTokenMapper;
 import edu.uta.cse.serveme.service.UserService;
 import edu.uta.cse.serveme.utils.JwtUtils;
 import lombok.RequiredArgsConstructor;
@@ -31,6 +32,7 @@ public class UserServiceImpl implements UserService {
 
     private final UserMapper userMapper;
     private final UserInfoMapper userInfoMapper;
+    private final UserTokenMapper userTokenMapper;
 
     private final PasswordEncoder passwordEncoder;
 
@@ -38,9 +40,6 @@ public class UserServiceImpl implements UserService {
 
     @Value("${user.role}")
     private String initRole;
-
-    @Value("${user.group}")
-    private UserGroup initGroup;
 
     @Value("${user.level}")
     private Integer initLevel;
@@ -120,8 +119,23 @@ public class UserServiceImpl implements UserService {
         return null;
     }
 
-    private List<String> checkExist(User userDto) {
+    @Override
+    public UserToken oneTokenByUid(Integer uid) {
+        return userTokenMapper.selectByUid(uid);
+    }
 
+    @Override
+    public Integer updateOrCreateToken(UserToken userToken) {
+        UserToken old = userTokenMapper.selectByUid(userToken.getUid());
+        if (old == null) {
+            userToken.setCreateTime(new Date());
+            return userTokenMapper.insertSelective(userToken);
+        }
+        userToken.setId(old.getId());
+        return userTokenMapper.updateByPrimaryKeySelective(userToken);
+    }
+
+    private List<String> checkExist(User userDto) {
         List<String> result = Lists.newArrayList();
 
         if (Boolean.TRUE.equals(userMapper.existUsername(userDto.getUsername()))) {

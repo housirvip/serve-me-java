@@ -3,6 +3,7 @@ package edu.uta.cse.serveme.service;
 import com.github.pagehelper.Page;
 import edu.uta.cse.serveme.entity.User;
 import edu.uta.cse.serveme.entity.UserInfo;
+import edu.uta.cse.serveme.entity.UserToken;
 
 import java.util.Map;
 
@@ -45,9 +46,9 @@ public interface UserService {
     /**
      * select user list where equal param pageDto
      *
-     * @param pageNum int
+     * @param pageNum  int
      * @param pageSize int
-     * @param params Map
+     * @param params   Map
      * @return Page
      */
     Page<User> pageByParam(int pageNum, int pageSize, Map<String, Object> params);
@@ -67,4 +68,21 @@ public interface UserService {
      * @return Integer
      */
     Integer updateInfo(UserInfo userInfo);
+
+
+    /**
+     * select a user_token where equal param uid
+     *
+     * @param uid Integer
+     * @return UserToken
+     */
+    UserToken oneTokenByUid(Integer uid);
+
+    /**
+     * update user_token where equal param userInfo
+     *
+     * @param userToken UserToken
+     * @return Boolean
+     */
+    Integer updateOrCreateToken(UserToken userToken);
 }
