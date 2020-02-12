@@ -17,17 +17,16 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping(value = "/auth")
 @RequiredArgsConstructor
 public class AuthController {
-     private final UserService userService;
+
+    private final UserService userService;
 
     @PostMapping(value = "/login")
     public BaseResponse<String> login(@RequestBody @Validated(value = Login.class) User user) {
-
         return new ResultResponse<>(userService.login(user));
     }
 
     @PostMapping(value = "/register")
     public BaseResponse<String> signUp(@RequestBody @Validated(value = Register.class) User user) {
-
         return new ResultResponse<>(userService.register(user));
     }
 }

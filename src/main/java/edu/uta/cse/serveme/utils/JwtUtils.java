@@ -24,7 +24,7 @@ public class JwtUtils {
 
     private final Long delay;
 
-    public String encode(Integer uid, List<String> role) {
+    public String encode(Long uid, List<String> role) {
 
         String jwt = null;
         String[] roles = new String[role.size()];

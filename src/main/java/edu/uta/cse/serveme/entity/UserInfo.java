@@ -2,14 +2,20 @@ package edu.uta.cse.serveme.entity;
 
 import lombok.Data;
 
-import java.io.Serializable;
+import javax.persistence.*;
 import java.util.Date;
 
+/**
+ * @author housirvip
+ */
 @Data
-public class UserInfo implements Serializable {
-    private Integer id;
+@Entity
+public class UserInfo {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
-    private Integer uid;
+    private Long uid;
 
     private String avatar;
 
@@ -25,5 +31,13 @@ public class UserInfo implements Serializable {
 
     private Date updateTime;
 
-    private static final long serialVersionUID = 1L;
+    @PrePersist
+    protected void onCreate() {
+        createTime = new Date();
+    }
+
+    @PreUpdate
+    protected void onUpdate() {
+        updateTime = new Date();
+    }
 }

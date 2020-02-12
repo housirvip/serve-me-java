@@ -1,16 +1,16 @@
 package edu.uta.cse.serveme.service.impl;
 
-import com.github.pagehelper.Page;
 import com.google.common.base.Preconditions;
+import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Lists;
 import edu.uta.cse.serveme.constant.Constant;
 import edu.uta.cse.serveme.constant.ErrorMessage;
 import edu.uta.cse.serveme.entity.User;
 import edu.uta.cse.serveme.entity.UserInfo;
 import edu.uta.cse.serveme.entity.UserToken;
-import edu.uta.cse.serveme.mapper.UserInfoMapper;
-import edu.uta.cse.serveme.mapper.UserMapper;
-import edu.uta.cse.serveme.mapper.UserTokenMapper;
+import edu.uta.cse.serveme.repository.UserInfoRepository;
+import edu.uta.cse.serveme.repository.UserRepository;
+import edu.uta.cse.serveme.repository.UserTokenRepository;
 import edu.uta.cse.serveme.service.UserService;
 import edu.uta.cse.serveme.utils.JwtUtils;
 import lombok.RequiredArgsConstructor;
@@ -19,9 +19,9 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Date;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 /**
  * @author housirvip
@@ -30,9 +30,9 @@ import java.util.Map;
 @RequiredArgsConstructor
 public class UserServiceImpl implements UserService {
 
-    private final UserMapper userMapper;
-    private final UserInfoMapper userInfoMapper;
-    private final UserTokenMapper userTokenMapper;
+    private final UserRepository userRepository;
+    private final UserInfoRepository userInfoRepository;
+    private final UserTokenRepository userTokenRepository;
 
     private final PasswordEncoder passwordEncoder;
 
@@ -46,8 +46,9 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public String login(User auth) {
-        User user = userMapper.selcectByUsername(auth.getUsername());
-        // Account wan't found
+        User user = userRepository.findByEmail(auth.getEmail()).orElse(null);
+
+        // Account didn't found
         Preconditions.checkNotNull(user, ErrorMessage.ACCOUNT_NOT_FOUND);
         // Account was banned
         Preconditions.checkArgument(user.getEnable(), ErrorMessage.ACCOUNT_DISABLED);
@@ -60,12 +61,13 @@ public class UserServiceImpl implements UserService {
     @Override
     @Transactional(rollbackFor = Exception.class)
     public String register(User auth) {
-        // check if username, phone, or email already exist
-        List<String> check = this.checkExist(auth);
-        Preconditions.checkArgument(check.size() == 0, check.toString());
+
+        // check if email already exist
+        userRepository.findByEmail(auth.getEmail()).ifPresent(u -> {
+            throw new RuntimeException(ErrorMessage.EMAIL_EXIST);
+        });
 
         User user = new User();
-        user.setCreateTime(new Date());
         user.setEmail(auth.getEmail());
         user.setUsername(auth.getUsername());
         user.setPhone(auth.getPhone());
@@ -78,35 +80,29 @@ public class UserServiceImpl implements UserService {
         }
         user.setRole(roles);
 
-        userMapper.insertSelective(user);
+        userRepository.save(user);
 
         UserInfo userInfo = new UserInfo();
         userInfo.setUid(user.getId());
-        userInfo.setCreateTime(new Date());
-        userInfoMapper.insertSelective(userInfo);
+        userInfoRepository.save(userInfo);
+
+        UserToken userToken = new UserToken();
+        userToken.setUid(user.getId());
+        userTokenRepository.save(userToken);
 
         return jwtUtils.encode(user.getId(), user.getRole());
     }
 
     @Override
     public User oneById(Integer uid) {
-        User user = userMapper.selectByPrimaryKey(uid);
-        user.setPassword(null);
-        return user;
+        return null;
     }
 
     @Override
-    public User oneByIdWithInfo(Integer uid) {
-        User user = userMapper.selectByPrimaryKey(uid);
-        user.setPassword(null);
-        UserInfo userInfo = userInfoMapper.selectByUid(uid);
-        user.setUserInfo(userInfo);
-        return user;
-    }
-
-    @Override
-    public Page<User> pageByParam(int pageNum, int pageSize, Map<String, Object> params) {
-        return userMapper.listByParam(params);
+    public Map<String, Object> detail(Long uid) {
+        Optional<User> user = userRepository.findById(uid);
+        Optional<UserInfo> userInfo = userInfoRepository.findByUid(uid);
+        return ImmutableMap.of("user", user, "userInfo", userInfo);
     }
 
     @Override
@@ -121,33 +117,16 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserToken oneTokenByUid(Integer uid) {
-        return userTokenMapper.selectByUid(uid);
+        return null;
     }
 
     @Override
-    public Integer updateOrCreateToken(UserToken userToken) {
-        UserToken old = userTokenMapper.selectByUid(userToken.getUid());
-        if (old == null) {
-            userToken.setCreateTime(new Date());
-            return userTokenMapper.insertSelective(userToken);
-        }
-        userToken.setId(old.getId());
-        return userTokenMapper.updateByPrimaryKeySelective(userToken);
-    }
-
-    private List<String> checkExist(User userDto) {
-        List<String> result = Lists.newArrayList();
-
-        if (Boolean.TRUE.equals(userMapper.existUsername(userDto.getUsername()))) {
-            result.add(ErrorMessage.USERNAME_EXIST);
-        }
-        if (Boolean.TRUE.equals(userMapper.existEmail(userDto.getEmail()))) {
-            result.add(ErrorMessage.EMAIL_EXIST);
-        }
-        if (Boolean.TRUE.equals(userMapper.existPhone(userDto.getPhone()))) {
-            result.add(ErrorMessage.PHONE_EXIST);
-        }
-
-        return result;
+    public Long updateToken(UserToken userToken) {
+        userTokenRepository.findByUid(userToken.getUid()).ifPresent(t -> {
+            userToken.setId(t.getId());
+            t.setFcmToken(userToken.getFcmToken());
+            userTokenRepository.save(t);
+        });
+        return userToken.getId();
     }
 }

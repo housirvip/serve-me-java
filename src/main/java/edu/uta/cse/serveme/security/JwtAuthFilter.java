@@ -47,7 +47,7 @@ public class JwtAuthFilter extends BasicAuthenticationFilter {
             return;
         }
 
-        Integer uid = jwt.getClaim(Constant.UID).asInt();
+        Long uid = jwt.getClaim(Constant.UID).asLong();
         String[] role = jwt.getClaim(Constant.ROLE).asArray(String.class);
 
         SecurityContextHolder.getContext().setAuthentication(

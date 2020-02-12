@@ -10,32 +10,23 @@ spring:
     driver-class-name: com.mysql.cj.jdbc.Driver
     hikari:
       # default is 1800000
-      max-lifetime: 600000
+      max-lifetime: 180000
   jackson:
     default-property-inclusion: NON_NULL
     date-format: yyyy-MM-dd HH:mm:ss
     time-zone: GMT-5
-
-mybatis:
-  mapper-locations: classpath:mapper/*.xml
+  jpa:
+    hibernate:
+      ddl-auto: update
 
 logging:
   level:
     root: info
 #    edu.uta.cse.serveme.mapper: debug
 
-pagehelper:
-  helperDialect: mysql
-  offsetAsPageNum: true
-  pageSizeZero: true
-  #    reasonable: true
-  #    supportMethodsArguments: true
-  rowBoundsWithCount: true
-
 # custom defined params
 user:
   role: USER
-  group: User
   level: 0
 
 jwt:
