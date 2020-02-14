@@ -4,8 +4,6 @@ import edu.uta.cse.serveme.entity.User;
 import edu.uta.cse.serveme.entity.UserInfo;
 import edu.uta.cse.serveme.entity.UserToken;
 
-import java.util.Map;
-
 /**
  * @author housirvip
  */
@@ -29,10 +27,10 @@ public interface UserService {
     /**
      * select a user where equal param uid
      *
-     * @param uid Integer
+     * @param uid Long
      * @return User
      */
-    User oneById(Integer uid);
+    User userById(Long uid);
 
     /**
      * select a user where equal param uid
@@ -40,17 +38,7 @@ public interface UserService {
      * @param uid Long
      * @return User
      */
-    Map<String, Object> detail(Long uid);
-
-    /**
-     * select user list where equal param pageDto
-     *
-     * @param pageNum  int
-     * @param pageSize int
-     * @param params   Map
-     * @return Page
-     */
-//    Page<User> pageByParam(int pageNum, int pageSize, Map<String, Object> params);
+    UserInfo infoByUid(Long uid);
 
     /**
      * update user where equal param user
@@ -58,7 +46,7 @@ public interface UserService {
      * @param user User
      * @return Integer
      */
-    Integer update(User user);
+    Integer updateUser(User user);
 
     /**
      * update userInfo where equal param userInfo
@@ -75,7 +63,7 @@ public interface UserService {
      * @param uid Integer
      * @return UserToken
      */
-    UserToken oneTokenByUid(Integer uid);
+    UserToken tokenByUid(Integer uid);
 
     /**
      * update user_token where equal param userInfo

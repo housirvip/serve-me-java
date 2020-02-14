@@ -35,7 +35,7 @@ public class JwtAuthFilter extends BasicAuthenticationFilter {
         String token = request.getHeader(Constant.AUTHORIZATION);
 
         // if header of Authorization contains nothing or not start with 'Bearer '
-        if (token == null || !token.startsWith(Constant.TOKEN_PREFIX)) {
+        if (token == null || !token.startsWith(Constant.TOKEN_PREFIX) || token.equals(Constant.TOKEN_PREFIX)) {
             chain.doFilter(request, response);
             return;
         }

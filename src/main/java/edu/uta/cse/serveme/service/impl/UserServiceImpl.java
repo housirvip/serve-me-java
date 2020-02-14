@@ -1,7 +1,6 @@
 package edu.uta.cse.serveme.service.impl;
 
 import com.google.common.base.Preconditions;
-import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Lists;
 import edu.uta.cse.serveme.constant.Constant;
 import edu.uta.cse.serveme.constant.ErrorMessage;
@@ -20,7 +19,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 
 /**
@@ -72,6 +70,7 @@ public class UserServiceImpl implements UserService {
         user.setUsername(auth.getUsername());
         user.setPhone(auth.getPhone());
         user.setLevel(initLevel);
+        user.setEnable(true);
         user.setPassword(passwordEncoder.encode(auth.getPassword()));
 
         List<String> roles = Lists.newArrayList(Constant.ROLE_PREFIX + Constant.USER);
@@ -94,19 +93,19 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User oneById(Integer uid) {
-        return null;
-    }
-
-    @Override
-    public Map<String, Object> detail(Long uid) {
+    public User userById(Long uid) {
         Optional<User> user = userRepository.findById(uid);
-        Optional<UserInfo> userInfo = userInfoRepository.findByUid(uid);
-        return ImmutableMap.of("user", user, "userInfo", userInfo);
+        return user.orElse(null);
     }
 
     @Override
-    public Integer update(User user) {
+    public UserInfo infoByUid(Long uid) {
+        Optional<UserInfo> userInfo = userInfoRepository.findByUid(uid);
+        return userInfo.orElse(null);
+    }
+
+    @Override
+    public Integer updateUser(User user) {
         return null;
     }
 
@@ -116,7 +115,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public UserToken oneTokenByUid(Integer uid) {
+    public UserToken tokenByUid(Integer uid) {
         return null;
     }
 
