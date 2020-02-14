@@ -18,6 +18,4 @@ export CLEARDB_DATABASE_URL=mysql://{user}:{password}@{ipaddress}:{port}/serve-m
 {password} is sql password
 {ipaddress} is sql address, local machine is localhost
 {port} is sql port, usually is 3306
-
-# sql schema is in the /server-me-java/sql directory
 ```
