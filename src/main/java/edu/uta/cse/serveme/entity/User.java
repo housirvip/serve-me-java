@@ -1,12 +1,8 @@
 package edu.uta.cse.serveme.entity;
 
-import edu.uta.cse.serveme.validator.ChangePass;
-import edu.uta.cse.serveme.validator.Login;
-import edu.uta.cse.serveme.validator.Register;
 import lombok.Data;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotBlank;
 import java.util.Date;
 import java.util.List;
 
@@ -20,27 +16,21 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @NotBlank(groups = {Register.class})
     private String username;
 
-    @NotBlank(groups = {Login.class, Register.class})
     private String email;
 
-    @NotBlank(groups = {Register.class})
     private String phone;
-
-    @NotBlank(groups = {Login.class, Register.class, ChangePass.class})
-    private String password;
 
     private Date createTime;
 
     private Date updateTime;
 
-    private Boolean enable;
+    private Integer points;
 
-    private Integer level;
+    private String firebaseUid;
 
-    @ElementCollection
+    @ElementCollection(fetch = FetchType.EAGER)
     private List<String> role;
 
     @PrePersist

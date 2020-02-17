@@ -6,11 +6,12 @@ spring:
   application:
     name: serve-me
   datasource:
-    url: jdbc:${CLEARDB_DATABASE_URL}
+    url: jdbc:${DB_URL}
     driver-class-name: com.mysql.cj.jdbc.Driver
     hikari:
       # default is 1800000
-      max-lifetime: 180000
+      max-lifetime: 1800000
+      password: ${DB_PASSWORD}
   jackson:
     default-property-inclusion: NON_NULL
     date-format: yyyy-MM-dd HH:mm:ss
@@ -24,10 +25,13 @@ logging:
     root: info
 #    edu.uta.cse.serveme.mapper: debug
 
+firebase:
+  database: https://serve-me-ionic.firebaseio.com
+
 # custom defined params
 user:
-  role: USER
-  level: 0
+  role: ROLE_USER,ROLE_CUSTOMER
+  points: 0
 
 jwt:
   secret: changeIt

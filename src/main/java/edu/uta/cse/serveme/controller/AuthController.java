@@ -4,11 +4,11 @@ import edu.uta.cse.serveme.base.BaseResponse;
 import edu.uta.cse.serveme.base.ResultResponse;
 import edu.uta.cse.serveme.entity.User;
 import edu.uta.cse.serveme.service.UserService;
-import edu.uta.cse.serveme.validator.Login;
-import edu.uta.cse.serveme.validator.Register;
 import lombok.RequiredArgsConstructor;
-import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 /**
  * @author housirvip
@@ -20,13 +20,8 @@ public class AuthController {
 
     private final UserService userService;
 
-    @PostMapping(value = "/login")
-    public BaseResponse<String> login(@RequestBody @Validated(value = Login.class) User user) {
-        return new ResultResponse<>(userService.login(user));
-    }
-
     @PostMapping(value = "/register")
-    public BaseResponse<String> signUp(@RequestBody @Validated(value = Register.class) User user) {
-        return new ResultResponse<>(userService.register(user));
+    public BaseResponse<User> signUp(@RequestBody User auth) {
+        return new ResultResponse<>(userService.register(auth));
     }
 }

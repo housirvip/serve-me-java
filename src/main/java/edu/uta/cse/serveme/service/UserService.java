@@ -8,13 +8,6 @@ import edu.uta.cse.serveme.entity.UserToken;
  * @author housirvip
  */
 public interface UserService {
-    /**
-     * verify account and password, then return jwt token
-     *
-     * @param user User
-     * @return String
-     */
-    String login(User user);
 
     /**
      * register a new account, then return jwt token
@@ -22,7 +15,7 @@ public interface UserService {
      * @param user User
      * @return String
      */
-    String register(User user);
+    User register(User user);
 
     /**
      * select a user where equal param uid
@@ -31,6 +24,14 @@ public interface UserService {
      * @return User
      */
     User userById(Long uid);
+
+    /**
+     * select a user where equal param firebaseUid
+     *
+     * @param firebaseUid String
+     * @return User
+     */
+    User userByFirebaseUid(String firebaseUid);
 
     /**
      * select a user where equal param uid

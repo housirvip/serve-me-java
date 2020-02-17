@@ -1,8 +1,12 @@
 package edu.uta.cse.serveme.security;
 
-import com.auth0.jwt.interfaces.DecodedJWT;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseAuthException;
+import com.google.firebase.auth.FirebaseToken;
 import edu.uta.cse.serveme.constant.Constant;
-import edu.uta.cse.serveme.utils.JwtUtils;
+import edu.uta.cse.serveme.entity.User;
+import edu.uta.cse.serveme.service.UserService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.authority.AuthorityUtils;
@@ -18,19 +22,18 @@ import java.io.IOException;
 /**
  * @author housirvip
  */
+@Slf4j
 public class JwtAuthFilter extends BasicAuthenticationFilter {
 
-    private final JwtUtils jwtUtils;
+    private final UserService userService;
 
-    JwtAuthFilter(AuthenticationManager authenticationManager, JwtUtils jwtUtils) {
-
+    JwtAuthFilter(AuthenticationManager authenticationManager, UserService userService) {
         super(authenticationManager);
-        this.jwtUtils = jwtUtils;
+        this.userService = userService;
     }
 
     @Override
-    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain chain)
-            throws IOException, ServletException {
+    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain chain) throws IOException, ServletException {
 
         String token = request.getHeader(Constant.AUTHORIZATION);
 
@@ -40,19 +43,28 @@ public class JwtAuthFilter extends BasicAuthenticationFilter {
             return;
         }
 
-        // jwt verify failed
-        DecodedJWT jwt = jwtUtils.decode(token.replace(Constant.TOKEN_PREFIX, ""));
-        if (jwt == null) {
+        // firebaseToken verify failed
+        FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
+        FirebaseToken firebaseToken = null;
+        try {
+            firebaseToken = firebaseAuth.verifyIdToken(token.replace(Constant.TOKEN_PREFIX, ""));
+        } catch (FirebaseAuthException e) {
+            log.warn("FirebaseAuthException: {}", e.getMessage());
+        }
+        if (firebaseToken == null) {
             chain.doFilter(request, response);
             return;
         }
 
-        Long uid = jwt.getClaim(Constant.UID).asLong();
-        String[] role = jwt.getClaim(Constant.ROLE).asArray(String.class);
+        String firebaseTokenUid = firebaseToken.getUid();
+        User user = userService.userByFirebaseUid(firebaseTokenUid);
+        if (user == null) {
+            chain.doFilter(request, response);
+            return;
+        }
 
         SecurityContextHolder.getContext().setAuthentication(
-                new UsernamePasswordAuthenticationToken(uid, null,
-                        AuthorityUtils.createAuthorityList(role)));
+                new UsernamePasswordAuthenticationToken(user.getId(), firebaseTokenUid, AuthorityUtils.createAuthorityList(user.getRole().toArray(new String[0]))));
 
         chain.doFilter(request, response);
     }
