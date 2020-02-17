@@ -1,9 +1,9 @@
 package edu.uta.cse.serveme.security;
 
 import edu.uta.cse.serveme.constant.ErrorMessage;
-import edu.uta.cse.serveme.utils.JwtUtils;
+import edu.uta.cse.serveme.service.UserService;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
@@ -23,21 +23,10 @@ import javax.servlet.http.HttpServletResponse;
 @Configuration
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(prePostEnabled = true)
+@RequiredArgsConstructor
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
-    @Value("${jwt.secret}")
-    private String secret;
-
-    @Value("${jwt.expire}")
-    private Long expire;
-
-    @Value("${jwt.delay}")
-    private Long delay;
-
-    @Bean
-    public JwtUtils jwtUtils() {
-        return new JwtUtils(secret, expire, delay);
-    }
+    private final UserService userService;
 
     @Bean
     public PasswordEncoder passwordEncoder() {
@@ -54,12 +43,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                         httpServletResponse.sendError(HttpServletResponse.SC_UNAUTHORIZED, ErrorMessage.UNAUTHORIZED))
                 .and().authorizeRequests()
                 // below path all permitted, needn't to check authorization
-                .antMatchers("/actuator/**", "/auth/**", "/user/friend", "/noauth/**", "/druid/**", "/movie/isCollect", "/movie/now_playing",
-                        "/movie/details/{movie_id}", "/movie/credits/{movie_id}", "/movie/discover", "/movie/search", "/movie/recommend","/review/getById/{reviewId}",
-                        "/review/getByMid","/review/getByUid","/review/getByFollowing","/review/hot","/review/reply/getByRid", "/score").permitAll()
+                .antMatchers("/actuator/**", "/auth/**", "/noauth/**").permitAll()
                 .antMatchers("/**").authenticated()
                 // path start with '/admin' should has role ADMIN or ROOT
                 // .antMatchers("/admin/**").hasAnyRole("ADMIN", "ROOT")
-                .and().addFilter(new JwtAuthFilter(authenticationManager(), jwtUtils()));
+                .and().addFilter(new JwtAuthFilter(authenticationManager(), userService));
     }
 }

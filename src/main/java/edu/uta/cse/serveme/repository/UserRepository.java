@@ -28,6 +28,14 @@ public interface UserRepository extends CrudRepository<User, Long> {
     Optional<User> findByEmail(String email);
 
     /**
+     * find user by firebaseUid
+     *
+     * @param firebaseUid String
+     * @return User
+     */
+    Optional<User> findByFirebaseUid(String firebaseUid);
+
+    /**
      * use it to check if exist same email,phone,username
      *
      * @param email    String
