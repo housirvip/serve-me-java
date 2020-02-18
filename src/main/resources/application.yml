@@ -11,6 +11,7 @@ spring:
     hikari:
       # default is 1800000
       max-lifetime: 1800000
+      username: ${DB_USER}
       password: ${DB_PASSWORD}
   jackson:
     default-property-inclusion: NON_NULL
