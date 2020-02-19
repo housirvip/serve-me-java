@@ -9,8 +9,6 @@ spring:
     url: jdbc:${DB_URL}
     driver-class-name: com.mysql.cj.jdbc.Driver
     hikari:
-      # default is 1800000
-      max-lifetime: 1800000
       username: ${DB_USER}
       password: ${DB_PASSWORD}
   jackson:
