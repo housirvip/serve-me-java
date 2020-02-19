@@ -3,7 +3,6 @@ package edu.uta.cse.serveme.security;
 import edu.uta.cse.serveme.constant.ErrorMessage;
 import edu.uta.cse.serveme.service.UserService;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
@@ -19,7 +18,6 @@ import javax.servlet.http.HttpServletResponse;
 /**
  * @author housirvip
  */
-@Slf4j
 @Configuration
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(prePostEnabled = true)

@@ -11,14 +11,13 @@
     <groupId>edu.uta.cse</groupId>
     <artifactId>serve-me</artifactId>
     <version>0.1.2-SNAPSHOT</version>
-    <name>serve-me</name>
+    <name>serve-me-java</name>
     <description>Demo project for Spring Boot</description>
 
     <properties>
         <java.version>1.8</java.version>
-        <page-helper.version>1.2.12</page-helper.version>
         <firebase.version>6.12.2</firebase.version>
-        <guava.version>28.1-jre</guava.version>
+        <guava.version>28.2-jre</guava.version>
     </properties>
 
     <dependencies>

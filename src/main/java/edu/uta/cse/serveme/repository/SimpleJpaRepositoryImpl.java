@@ -33,47 +33,53 @@ public class SimpleJpaRepositoryImpl<T, ID> extends SimpleJpaRepository<T, ID> {
     }
 
     /**
-     * 通用save方法 ：新增/选择性更新
+     * common function：save/update selective
+     *
+     * @param entity S
+     * @return S
      */
     @Override
     @Transactional(rollbackFor = Exception.class)
     public <S extends T> S save(S entity) {
-        //获取ID
+        //get ID
         ID entityId = (ID) entityInformation.getId(entity);
         Optional<T> optionalT;
         if (StringUtils.isEmpty(entityId)) {
-            //标记为新增数据
+            // mark as new record
             optionalT = Optional.empty();
         } else {
-            //若ID非空 则查询最新数据
+            //entity id != null, find it
             optionalT = findById(entityId);
         }
-        //获取空属性并处理成null
+        //set empty fields as null
         String[] nullProperties = getNullProperties(entity);
-        //若根据ID查询结果为空
+        //check if id is present
         if (!optionalT.isPresent()) {
-            //新增
+            //create new one
             em.persist(entity);
         } else {
-            //1.获取最新对象
+            //1.get the updated entity
             T target = optionalT.get();
-            //2.将非空属性覆盖到最新对象
+            //2.copy properties with BeanUtils
             BeanUtils.copyProperties(entity, target, nullProperties);
-            //3.更新非空属性
+            //3.update fields which is not null
             em.merge(target);
         }
         return entity;
     }
 
     /**
-     * 获取对象的空属性
+     * get bean's null fields
+     *
+     * @param src Object
+     * @return String[]
      */
     private static String[] getNullProperties(Object src) {
-        //1.获取Bean
+        //1.get Bean
         BeanWrapper srcBean = new BeanWrapperImpl(src);
-        //2.获取Bean的属性描述
+        //2.get Bean PropertyDescriptor
         PropertyDescriptor[] pds = srcBean.getPropertyDescriptors();
-        //3.获取Bean的空属性
+        //3.get Bean null fields
         Set<String> properties = new HashSet<>();
         for (PropertyDescriptor propertyDescriptor : pds) {
             String propertyName = propertyDescriptor.getName();

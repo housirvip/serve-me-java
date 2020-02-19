@@ -20,12 +20,12 @@ public class MyExceptionHandler {
 
     @ResponseStatus(HttpStatus.OK)
     @ExceptionHandler(RuntimeException.class)
-    public BaseResponse handlerRuntimeException(RuntimeException ex) {
+    public BaseResponse<?> handlerRuntimeException(RuntimeException ex) {
 
         if (ex.getMessage() == null || ex.getMessage().isEmpty()) {
-            return new ErrorResponse(ErrorMessage.SERVICE_EXCEPTION);
+            return new ErrorResponse<>(ErrorMessage.SERVICE_EXCEPTION);
         }
 
-        return new ErrorResponse(ex.getMessage());
+        return new ErrorResponse<>(ex.getMessage());
     }
 }
