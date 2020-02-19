@@ -30,6 +30,18 @@ public class User {
 
     private String firebaseUid;
 
+    private String photoUrl;
+
+    private String sex;
+
+    private String job;
+
+    private String state;
+
+    private Date birthday;
+
+    private String fcmToken;
+
     @ElementCollection(fetch = FetchType.EAGER)
     private List<String> role;
 
