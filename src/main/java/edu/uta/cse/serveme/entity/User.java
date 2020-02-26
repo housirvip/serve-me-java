@@ -32,13 +32,7 @@ public class User {
 
     private String photoUrl;
 
-    private String sex;
-
-    private String job;
-
-    private String state;
-
-    private Date birthday;
+    private String gender;
 
     private String fcmToken;
 

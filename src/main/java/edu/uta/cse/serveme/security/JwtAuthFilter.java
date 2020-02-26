@@ -6,12 +6,13 @@ import com.google.firebase.auth.FirebaseToken;
 import edu.uta.cse.serveme.constant.Constant;
 import edu.uta.cse.serveme.entity.User;
 import edu.uta.cse.serveme.service.UserService;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
+import org.springframework.stereotype.Component;
+import org.springframework.web.filter.OncePerRequestFilter;
 
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
@@ -23,14 +24,11 @@ import java.io.IOException;
  * @author housirvip
  */
 @Slf4j
-public class JwtAuthFilter extends BasicAuthenticationFilter {
+@Component
+@RequiredArgsConstructor
+public class JwtAuthFilter extends OncePerRequestFilter {
 
     private final UserService userService;
-
-    JwtAuthFilter(AuthenticationManager authenticationManager, UserService userService) {
-        super(authenticationManager);
-        this.userService = userService;
-    }
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain chain) throws IOException, ServletException {
