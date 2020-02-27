@@ -1,4 +1,4 @@
-package edu.uta.cse.serveme.constant;
+package edu.uta.cse.serveme.base;
 
 /**
  * @author housirvip

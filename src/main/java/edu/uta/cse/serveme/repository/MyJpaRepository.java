@@ -20,13 +20,13 @@ import java.util.Set;
  * @author housirvip
  */
 @NoRepositoryBean
-public class SimpleJpaRepositoryImpl<T, ID> extends SimpleJpaRepository<T, ID> {
+public class MyJpaRepository<T, ID> extends SimpleJpaRepository<T, ID> {
 
     private final JpaEntityInformation<T, ?> entityInformation;
     private final EntityManager em;
 
     @Autowired
-    public SimpleJpaRepositoryImpl(JpaEntityInformation<T, ?> entityInformation, EntityManager entityManager) {
+    public MyJpaRepository(JpaEntityInformation<T, ?> entityInformation, EntityManager entityManager) {
         super(entityInformation, entityManager);
         this.entityInformation = entityInformation;
         this.em = entityManager;
@@ -34,6 +34,7 @@ public class SimpleJpaRepositoryImpl<T, ID> extends SimpleJpaRepository<T, ID> {
 
     /**
      * common function：save/update selective
+     * if field is null, then ignore it, rather than save to DB as null
      *
      * @param entity S
      * @return S

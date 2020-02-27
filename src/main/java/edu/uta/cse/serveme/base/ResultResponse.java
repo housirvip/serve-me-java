@@ -1,7 +1,5 @@
 package edu.uta.cse.serveme.base;
 
-import edu.uta.cse.serveme.constant.Constant;
-
 /**
  * @author housirvip
  */

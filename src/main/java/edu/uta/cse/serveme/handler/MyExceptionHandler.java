@@ -2,7 +2,7 @@ package edu.uta.cse.serveme.handler;
 
 import edu.uta.cse.serveme.base.BaseResponse;
 import edu.uta.cse.serveme.base.ErrorResponse;
-import edu.uta.cse.serveme.constant.ErrorMessage;
+import edu.uta.cse.serveme.base.ErrorMessage;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;

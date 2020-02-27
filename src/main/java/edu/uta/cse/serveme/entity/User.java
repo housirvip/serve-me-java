@@ -1,6 +1,8 @@
 package edu.uta.cse.serveme.entity;
 
 import lombok.Data;
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
 
 import javax.persistence.*;
 import java.util.Date;
@@ -36,8 +38,15 @@ public class User {
 
     private String fcmToken;
 
-    @ElementCollection(fetch = FetchType.EAGER)
-    private List<String> role;
+    @Enumerated(EnumType.STRING)
+    @Fetch(value = FetchMode.SUBSELECT)
+    @ElementCollection(targetClass = UserRole.class, fetch = FetchType.EAGER)
+    private List<UserRole> role;
+
+    @Enumerated(EnumType.STRING)
+    @Fetch(value = FetchMode.SUBSELECT)
+    @ElementCollection(targetClass = VendorCategory.class, fetch = FetchType.EAGER)
+    private List<VendorCategory> categories;
 
     @PrePersist
     protected void onCreate() {

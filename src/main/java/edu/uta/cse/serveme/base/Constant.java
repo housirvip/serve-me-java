@@ -1,4 +1,4 @@
-package edu.uta.cse.serveme.constant;
+package edu.uta.cse.serveme.base;
 
 /**
  * @author housirvip
@@ -25,12 +25,6 @@ public class Constant {
     public static final String PENDING = "pending";
     public static final String SUCCESS = "success";
     public static final String ERROR = "error";
-
-    public static final String LIMITED = "LIMITED";
-    public static final String USER = "USER";
-    public static final String VIP = "VIP";
-    public static final String ADMIN = "ADMIN";
-    public static final String ROOT = "ROOT";
 
     public static final String TOKEN_PREFIX = "Bearer ";
     public static final String ROLE_PREFIX = "ROLE_";

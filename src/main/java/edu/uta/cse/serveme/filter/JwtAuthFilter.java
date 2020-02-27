@@ -1,15 +1,17 @@
-package edu.uta.cse.serveme.security;
+package edu.uta.cse.serveme.filter;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseAuthException;
 import com.google.firebase.auth.FirebaseToken;
-import edu.uta.cse.serveme.constant.Constant;
+import edu.uta.cse.serveme.base.Constant;
 import edu.uta.cse.serveme.entity.User;
+import edu.uta.cse.serveme.entity.UserRole;
 import edu.uta.cse.serveme.service.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.authority.AuthorityUtils;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
@@ -19,6 +21,8 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author housirvip
@@ -60,9 +64,13 @@ public class JwtAuthFilter extends OncePerRequestFilter {
             chain.doFilter(request, response);
             return;
         }
+        List<UserRole> roleList = user.getRole();
+
+        List<GrantedAuthority> authorities = new ArrayList<>();
+        roleList.forEach(role -> authorities.add(new SimpleGrantedAuthority(role.name())));
 
         SecurityContextHolder.getContext().setAuthentication(
-                new UsernamePasswordAuthenticationToken(user.getId(), firebaseTokenUid, AuthorityUtils.createAuthorityList(user.getRole().toArray(new String[0]))));
+                new UsernamePasswordAuthenticationToken(user.getId(), firebaseTokenUid, authorities));
 
         chain.doFilter(request, response);
     }

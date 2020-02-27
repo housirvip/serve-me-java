@@ -1,13 +1,15 @@
 package edu.uta.cse.serveme.service.impl;
 
-import com.google.common.collect.Lists;
 import edu.uta.cse.serveme.entity.User;
+import edu.uta.cse.serveme.entity.UserRole;
 import edu.uta.cse.serveme.repository.UserRepository;
 import edu.uta.cse.serveme.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.Arrays;
 
 /**
  * @author housirvip
@@ -19,7 +21,7 @@ public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
 
     @Value("${user.role}")
-    private String[] initRole;
+    private UserRole[] initRole;
 
     @Value("${user.points}")
     private Integer initPoints;
@@ -47,7 +49,7 @@ public class UserServiceImpl implements UserService {
         user.setPhone(auth.getPhone());
         user.setFirebaseUid(auth.getFirebaseUid());
         user.setPoints(initPoints);
-        user.setRole(Lists.newArrayList(initRole));
+        user.setRole(Arrays.asList(initRole));
 
         userRepository.save(user);
 

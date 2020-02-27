@@ -1,6 +1,7 @@
-package edu.uta.cse.serveme.security;
+package edu.uta.cse.serveme.config;
 
-import edu.uta.cse.serveme.constant.ErrorMessage;
+import edu.uta.cse.serveme.base.ErrorMessage;
+import edu.uta.cse.serveme.filter.JwtAuthFilter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
