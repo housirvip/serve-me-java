@@ -78,7 +78,6 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    @Transactional(rollbackFor = Exception.class)
     public Vendor update(Vendor vendor) {
         return vendorRepository.save(vendor);
     }
