@@ -59,7 +59,7 @@ public class JwtAuthFilter extends OncePerRequestFilter {
         }
 
         String firebaseTokenUid = firebaseToken.getUid();
-        User user = userService.userByFirebaseUid(firebaseTokenUid);
+        User user = userService.findUserByFirebaseUid(firebaseTokenUid);
         if (user == null) {
             chain.doFilter(request, response);
             return;
@@ -68,9 +68,9 @@ public class JwtAuthFilter extends OncePerRequestFilter {
 
         List<GrantedAuthority> authorities = new ArrayList<>();
         roleList.forEach(role -> authorities.add(new SimpleGrantedAuthority(role.name())));
-
-        SecurityContextHolder.getContext().setAuthentication(
-                new UsernamePasswordAuthenticationToken(user.getId(), firebaseTokenUid, authorities));
+        UsernamePasswordAuthenticationToken authorization = new UsernamePasswordAuthenticationToken(user.getId(), firebaseTokenUid, authorities);
+        authorization.setDetails(user);
+        SecurityContextHolder.getContext().setAuthentication(authorization);
 
         chain.doFilter(request, response);
     }

@@ -1,6 +1,7 @@
 package edu.uta.cse.serveme.service;
 
 import edu.uta.cse.serveme.entity.User;
+import edu.uta.cse.serveme.entity.Vendor;
 
 /**
  * @author housirvip
@@ -21,7 +22,7 @@ public interface UserService {
      * @param uid Long
      * @return User
      */
-    User userById(Long uid);
+    User findUserById(Long uid);
 
     /**
      * select a user where equal param firebaseUid
@@ -29,13 +30,21 @@ public interface UserService {
      * @param firebaseUid String
      * @return User
      */
-    User userByFirebaseUid(String firebaseUid);
+    User findUserByFirebaseUid(String firebaseUid);
 
     /**
      * update user where equal param user
      *
      * @param user User
-     * @return Integer
+     * @return User
      */
     User update(User user);
+
+    /**
+     * update vendor for user
+     *
+     * @param vendor Vendor
+     * @return Vendor
+     */
+    Vendor update(Vendor vendor);
 }

@@ -2,7 +2,9 @@ package edu.uta.cse.serveme.service.impl;
 
 import edu.uta.cse.serveme.entity.User;
 import edu.uta.cse.serveme.entity.UserRole;
+import edu.uta.cse.serveme.entity.Vendor;
 import edu.uta.cse.serveme.repository.UserRepository;
+import edu.uta.cse.serveme.repository.VendorRepository;
 import edu.uta.cse.serveme.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
@@ -19,6 +21,7 @@ import java.util.Arrays;
 public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
+    private final VendorRepository vendorRepository;
 
     @Value("${user.role}")
     private UserRole[] initRole;
@@ -57,17 +60,26 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User userById(Long uid) {
+    public User findUserById(Long uid) {
         return userRepository.findById(uid).orElse(null);
     }
 
     @Override
-    public User userByFirebaseUid(String firebaseUid) {
+    public User findUserByFirebaseUid(String firebaseUid) {
         return userRepository.findByFirebaseUid(firebaseUid).orElse(null);
     }
 
     @Override
     public User update(User user) {
+        // fields in below shouldn't be changed via update user info
+        user.setVendor(null);
+        user.setFirebaseUid(null);
         return userRepository.save(user);
+    }
+
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public Vendor update(Vendor vendor) {
+        return vendorRepository.save(vendor);
     }
 }

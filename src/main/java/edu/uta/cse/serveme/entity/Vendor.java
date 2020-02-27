@@ -1,5 +1,6 @@
 package edu.uta.cse.serveme.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
 import org.hibernate.annotations.Fetch;
@@ -14,13 +15,18 @@ import java.util.List;
  */
 @Data
 @Entity
-@Table(name = "`user`")
-public class User {
+@Table(name = "`vendor`")
+public class Vendor {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String username;
+    @JoinColumn
+    @JsonBackReference
+    @OneToOne(fetch = FetchType.LAZY)
+    private User user;
+
+    private String name;
 
     private String email;
 
@@ -32,26 +38,14 @@ public class User {
     @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     private Date updateTime;
 
-    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
-    private Integer points;
-
-    private String firebaseUid;
+    private String address;
 
     private String photoUrl;
 
-    private String gender;
-
-    private String fcmToken;
-
-    private String address;
-
     @Enumerated(EnumType.STRING)
     @Fetch(value = FetchMode.SUBSELECT)
-    @ElementCollection(targetClass = UserRole.class, fetch = FetchType.EAGER)
-    private List<UserRole> role;
-
-    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private Vendor vendor;
+    @ElementCollection(targetClass = VendorCategory.class, fetch = FetchType.LAZY)
+    private List<VendorCategory> categories;
 
     @PrePersist
     protected void onCreate() {
