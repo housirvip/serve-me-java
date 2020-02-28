@@ -73,7 +73,6 @@ public class UserServiceImpl implements UserService {
     public User update(User user) {
         // fields in below shouldn't be changed via update user info
         user.setVendor(null);
-        user.setFirebaseUid(null);
         return userRepository.save(user);
     }
 

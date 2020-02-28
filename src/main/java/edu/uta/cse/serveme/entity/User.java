@@ -35,6 +35,7 @@ public class User {
     @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     private Integer points;
 
+    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     private String firebaseUid;
 
     private String photoUrl;

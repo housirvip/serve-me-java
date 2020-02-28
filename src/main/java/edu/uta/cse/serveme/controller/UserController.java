@@ -7,14 +7,14 @@ import edu.uta.cse.serveme.entity.UserRole;
 import edu.uta.cse.serveme.entity.Vendor;
 import edu.uta.cse.serveme.service.UserService;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 /**
  * @author housirvip
  */
+@Slf4j
 @RestController
 @RequestMapping(value = "/user")
 @RequiredArgsConstructor
@@ -35,10 +35,9 @@ public class UserController {
 
     @PutMapping(value = "/vendor")
     public BaseResponse<Vendor> vendor(@RequestBody Vendor vendor, Authentication auth) {
-        User user = userService.findUserById((Long) auth.getPrincipal());
-        List<UserRole> roleList = user.getRole();
-        if (!roleList.contains(UserRole.ROLE_VENDOR)) {
-            roleList.add(UserRole.ROLE_VENDOR);
+        User user = (User) auth.getDetails();
+        if (!user.getRole().contains(UserRole.ROLE_VENDOR)) {
+            user.getRole().add(UserRole.ROLE_VENDOR);
             userService.update(user);
         }
         if (user.getVendor() != null) {

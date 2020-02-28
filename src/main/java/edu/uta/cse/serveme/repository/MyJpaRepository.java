@@ -10,6 +10,7 @@ import org.springframework.data.repository.NoRepositoryBean;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 
+import javax.annotation.Nonnull;
 import javax.persistence.EntityManager;
 import java.beans.PropertyDescriptor;
 import java.util.HashSet;
@@ -39,33 +40,32 @@ public class MyJpaRepository<T, ID> extends SimpleJpaRepository<T, ID> {
      * @param entity S
      * @return S
      */
+    @Nonnull
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public <S extends T> S save(S entity) {
-        //get ID
+    public <S extends T> S save(@Nonnull S entity) {
+        // get ID
         ID entityId = (ID) entityInformation.getId(entity);
         Optional<T> optionalT;
         if (StringUtils.isEmpty(entityId)) {
             // mark as new record
             optionalT = Optional.empty();
         } else {
-            //entity id != null, find it
+            // entity id != null, find it
             optionalT = findById(entityId);
         }
         //set empty fields as null
         String[] nullProperties = getNullProperties(entity);
-        //check if id is present
-        if (!optionalT.isPresent()) {
-            //create new one
-            em.persist(entity);
-        } else {
-            //1.get the updated entity
-            T target = optionalT.get();
-            //2.copy properties with BeanUtils
+        optionalT.ifPresentOrElse(target -> {
+            // copy properties with BeanUtils
             BeanUtils.copyProperties(entity, target, nullProperties);
-            //3.update fields which is not null
+            // update fields which is not null
             em.merge(target);
-        }
+        }, () -> {
+            // create new one
+            em.persist(entity);
+        });
+        // check if id is present
         return entity;
     }
 
@@ -76,15 +76,16 @@ public class MyJpaRepository<T, ID> extends SimpleJpaRepository<T, ID> {
      * @return String[]
      */
     private static String[] getNullProperties(Object src) {
-        //1.get Bean
+        // get Bean
         BeanWrapper srcBean = new BeanWrapperImpl(src);
-        //2.get Bean PropertyDescriptor
-        PropertyDescriptor[] pds = srcBean.getPropertyDescriptors();
-        //3.get Bean null fields
+        // get Bean null fields
         Set<String> properties = new HashSet<>();
+        // get Bean PropertyDescriptor
+        PropertyDescriptor[] pds = srcBean.getPropertyDescriptors();
         for (PropertyDescriptor propertyDescriptor : pds) {
             String propertyName = propertyDescriptor.getName();
             Object propertyValue = srcBean.getPropertyValue(propertyName);
+            // if null or ""
             if (StringUtils.isEmpty(propertyValue)) {
                 srcBean.setPropertyValue(propertyName, null);
                 properties.add(propertyName);
