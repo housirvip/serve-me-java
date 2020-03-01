@@ -7,14 +7,12 @@ import edu.uta.cse.serveme.entity.UserRole;
 import edu.uta.cse.serveme.entity.Vendor;
 import edu.uta.cse.serveme.service.UserService;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
 /**
  * @author housirvip
  */
-@Slf4j
 @RestController
 @RequestMapping(value = "/user")
 @RequiredArgsConstructor

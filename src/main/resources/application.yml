@@ -32,11 +32,6 @@ user:
   role: ROLE_USER,ROLE_CUSTOMER
   points: 0
 
-jwt:
-  secret: changeIt
-  expire: 21600000
-  delay: 60
-
 cors:
   path: /**
   origins: http://localhost:8100,http://localhost:4200,http://localhost,capacitor://localhost,ionic://localhost

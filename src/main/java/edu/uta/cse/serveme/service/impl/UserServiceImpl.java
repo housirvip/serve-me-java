@@ -1,5 +1,6 @@
 package edu.uta.cse.serveme.service.impl;
 
+import edu.uta.cse.serveme.base.ErrorMessage;
 import edu.uta.cse.serveme.entity.User;
 import edu.uta.cse.serveme.entity.UserRole;
 import edu.uta.cse.serveme.entity.Vendor;
@@ -32,20 +33,6 @@ public class UserServiceImpl implements UserService {
     @Override
     @Transactional(rollbackFor = Exception.class)
     public User register(User auth) {
-
-        // check if email already exist
-//        if (auth.getEmail() != null) {
-//            userRepository.findByEmail(auth.getEmail()).ifPresent(u -> {
-//                throw new RuntimeException(ErrorMessage.EMAIL_EXIST);
-//            });
-//        }
-        // check if phone already exist
-//        if (auth.getPhone() != null) {
-//            userRepository.findByPhone(auth.getPhone()).ifPresent(u -> {
-//                throw new RuntimeException(ErrorMessage.PHONE_EXIST);
-//            });
-//        }
-
         User user = new User();
         user.setEmail(auth.getEmail());
         user.setUsername(auth.getUsername());
@@ -53,15 +40,12 @@ public class UserServiceImpl implements UserService {
         user.setFirebaseUid(auth.getFirebaseUid());
         user.setPoints(initPoints);
         user.setRole(Arrays.asList(initRole));
-
-        userRepository.save(user);
-
-        return user;
+        return userRepository.save(user);
     }
 
     @Override
     public User findUserById(Long uid) {
-        return userRepository.findById(uid).orElse(null);
+        return userRepository.findById(uid).orElseThrow(() -> new RuntimeException(ErrorMessage.USER_NOT_FOUND));
     }
 
     @Override
@@ -71,7 +55,6 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User update(User user) {
-        // fields in below shouldn't be changed via update user info
         user.setVendor(null);
         return userRepository.save(user);
     }

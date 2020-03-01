@@ -19,10 +19,28 @@ public interface OrderRepository extends CrudRepository<Order, Long> {
     Optional<Order> findByUid(Long uid);
 
     /**
+     * find order by customer id
+     *
+     * @param id  Long
+     * @param uid Long
+     * @return User
+     */
+    Optional<Order> findByIdAndUid(Long id, Long uid);
+
+    /**
      * find order by vendor id
      *
      * @param vid Long
      * @return User
      */
     Optional<Order> findByVid(Long vid);
+
+    /**
+     * find order by vendor id
+     *
+     * @param id  Long
+     * @param vid Long
+     * @return User
+     */
+    Optional<Order> findByIdAndVid(Long id, Long vid);
 }

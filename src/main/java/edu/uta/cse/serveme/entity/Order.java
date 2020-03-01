@@ -26,6 +26,9 @@ public class Order {
 
     private Date time;
 
+    @Enumerated(EnumType.STRING)
+    private VendorCategory category;
+
     @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     private Date createTime;
 
@@ -33,6 +36,9 @@ public class Order {
     private Date updateTime;
 
     private String address;
+
+    @Enumerated(EnumType.STRING)
+    private OrderStatus status;
 
     @OneToMany(mappedBy = "order", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<Bid> bids;
