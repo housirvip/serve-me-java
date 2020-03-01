@@ -45,9 +45,10 @@ public class OrderController {
 
     @PutMapping(value = "confirm")
     public BaseResponse<Bid> confirm(@RequestBody Bid bid, Authentication auth) {
-        Order order = bid.getOrder();
+        Order order = new Order();
         order.setUid((Long) auth.getPrincipal());
-        return new ResultResponse<>(orderService.confirm(bid));
+        order.setId(bid.getOid());
+        return new ResultResponse<>(orderService.confirm(order, bid));
     }
 
     @PutMapping(value = "pay")

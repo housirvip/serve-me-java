@@ -1,6 +1,6 @@
 package edu.uta.cse.serveme.entity;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
 import org.hibernate.annotations.Fetch;
@@ -16,15 +16,13 @@ import java.util.List;
 @Data
 @Entity
 @Table(name = "`vendor`")
+@JsonIgnoreProperties(value = {"hibernateLazyInitializer", "handler", "fieldHandler"})
 public class Vendor {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @JoinColumn
-    @JsonBackReference
-    @OneToOne(fetch = FetchType.LAZY)
-    private User user;
+    private Long uid;
 
     private String name;
 
@@ -32,20 +30,21 @@ public class Vendor {
 
     private String phone;
 
-    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
-    private Date createTime;
-
-    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
-    private Date updateTime;
-
-    private String address;
-
     private String photoUrl;
+
+    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private Address address;
 
     @Enumerated(EnumType.STRING)
     @Fetch(value = FetchMode.SUBSELECT)
     @ElementCollection(targetClass = VendorCategory.class, fetch = FetchType.LAZY)
     private List<VendorCategory> categories;
+
+    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
+    private Date createTime;
+
+    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
+    private Date updateTime;
 
     @PrePersist
     protected void onCreate() {

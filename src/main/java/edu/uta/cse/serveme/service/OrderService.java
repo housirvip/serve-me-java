@@ -52,10 +52,11 @@ public interface OrderService {
     /**
      * confirm an order
      *
-     * @param bid Bid
+     * @param order Order
+     * @param bid   Bid
      * @return Bid
      */
-    Bid confirm(Bid bid);
+    Bid confirm(Order order, Bid bid);
 
     /**
      * pay to the order

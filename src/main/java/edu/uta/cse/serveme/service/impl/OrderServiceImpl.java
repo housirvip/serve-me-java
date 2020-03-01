@@ -49,12 +49,15 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public Bid bid(Bid bid) {
         bid.setId(null);
+        bid.setOid(bid.getOid());
+        Order order = new Order();
+        order.setId(bid.getOid());
+        bid.setOrder(order);
         return bidRepository.save(bid);
     }
 
     @Override
-    public Bid confirm(Bid bid) {
-        Order order = bid.getOrder();
+    public Bid confirm(Order order, Bid bid) {
         bidRepository.findById(bid.getId()).ifPresentOrElse(
                 b -> {
                     bid.setUid(b.getUid());

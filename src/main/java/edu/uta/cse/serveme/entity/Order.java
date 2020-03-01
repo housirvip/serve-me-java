@@ -1,5 +1,6 @@
 package edu.uta.cse.serveme.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
 
@@ -13,6 +14,7 @@ import java.util.List;
 @Data
 @Entity
 @Table(name = "`order`")
+@JsonIgnoreProperties(value = {"hibernateLazyInitializer", "handler", "fieldHandler"})
 public class Order {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -35,7 +37,8 @@ public class Order {
     @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     private Date updateTime;
 
-    private String address;
+    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private Address address;
 
     @Enumerated(EnumType.STRING)
     private OrderStatus status;

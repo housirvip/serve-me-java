@@ -36,12 +36,10 @@ public class UserController {
         User user = (User) auth.getDetails();
         if (!user.getRole().contains(UserRole.ROLE_VENDOR)) {
             user.getRole().add(UserRole.ROLE_VENDOR);
-            userService.update(user);
         }
-        if (user.getVendor() != null) {
-            vendor.setId(user.getVendor().getId());
-        }
-        vendor.setUser(user);
-        return new ResultResponse<>(userService.update(vendor));
+        vendor.setUid(user.getId());
+        user.setVendor(vendor);
+        userService.update(user);
+        return new ResultResponse<>(vendor);
     }
 }

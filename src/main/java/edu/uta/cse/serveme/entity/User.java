@@ -1,5 +1,6 @@
 package edu.uta.cse.serveme.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
 import org.hibernate.annotations.Fetch;
@@ -15,6 +16,7 @@ import java.util.List;
 @Data
 @Entity
 @Table(name = "`user`")
+@JsonIgnoreProperties(value = {"hibernateLazyInitializer", "handler", "fieldHandler"})
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -35,7 +37,6 @@ public class User {
     @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     private Integer points;
 
-    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     private String firebaseUid;
 
     private String photoUrl;
@@ -44,14 +45,15 @@ public class User {
 
     private String fcmToken;
 
-    private String address;
+    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private Address address;
 
     @Enumerated(EnumType.STRING)
     @Fetch(value = FetchMode.SUBSELECT)
     @ElementCollection(targetClass = UserRole.class, fetch = FetchType.EAGER)
     private List<UserRole> role;
 
-    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private Vendor vendor;
 
     @PrePersist

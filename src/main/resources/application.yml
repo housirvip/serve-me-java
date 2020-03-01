@@ -15,6 +15,8 @@ spring:
     default-property-inclusion: NON_NULL
     date-format: yyyy-MM-dd HH:mm:ss
     time-zone: GMT-5
+    serialization:
+      fail-on-empty-beans: false
   jpa:
     hibernate:
       ddl-auto: update

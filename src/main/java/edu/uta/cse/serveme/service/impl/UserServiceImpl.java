@@ -55,7 +55,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User update(User user) {
-        user.setVendor(null);
+        user.setFirebaseUid(null);
         return userRepository.save(user);
     }
 

@@ -1,6 +1,5 @@
 package edu.uta.cse.serveme.entity;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
@@ -13,29 +12,40 @@ import java.util.Date;
  */
 @Data
 @Entity
-@Table(name = "`bid`")
+@Table(name = "`address`")
 @JsonIgnoreProperties(value = {"hibernateLazyInitializer", "handler", "fieldHandler"})
-public class Bid {
+public class Address {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     private Long uid;
 
-    private Long oid;
+    private String state;
 
-    @JoinColumn
-    @JsonBackReference
-    @ManyToOne(fetch = FetchType.LAZY)
-    private Order order;
+    private String city;
 
-    private Integer price;
+    private String name;
+
+    private String phone;
+
+    private Integer zipCode;
+
+    private String street;
 
     @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     private Date createTime;
 
+    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
+    private Date updateTime;
+
     @PrePersist
     protected void onCreate() {
         createTime = new Date();
+    }
+
+    @PreUpdate
+    protected void onUpdate() {
+        updateTime = new Date();
     }
 }
