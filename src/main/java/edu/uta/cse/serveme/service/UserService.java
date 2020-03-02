@@ -1,7 +1,10 @@
 package edu.uta.cse.serveme.service;
 
+import edu.uta.cse.serveme.entity.Address;
 import edu.uta.cse.serveme.entity.User;
 import edu.uta.cse.serveme.entity.Vendor;
+
+import java.util.List;
 
 /**
  * @author housirvip
@@ -55,4 +58,20 @@ public interface UserService {
      * @return Vendor
      */
     Vendor update(Vendor vendor);
+
+    /**
+     * update address for user
+     *
+     * @param address Address
+     * @return Address
+     */
+    Address update(Address address);
+
+    /**
+     * get address by user
+     *
+     * @param user User
+     * @return List
+     */
+    List<Address> getAddress(User user);
 }

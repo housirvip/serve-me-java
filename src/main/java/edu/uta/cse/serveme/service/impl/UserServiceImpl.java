@@ -1,9 +1,11 @@
 package edu.uta.cse.serveme.service.impl;
 
 import edu.uta.cse.serveme.base.ErrorMessage;
+import edu.uta.cse.serveme.entity.Address;
 import edu.uta.cse.serveme.entity.User;
 import edu.uta.cse.serveme.entity.UserRole;
 import edu.uta.cse.serveme.entity.Vendor;
+import edu.uta.cse.serveme.repository.AddressRepository;
 import edu.uta.cse.serveme.repository.UserRepository;
 import edu.uta.cse.serveme.repository.VendorRepository;
 import edu.uta.cse.serveme.service.UserService;
@@ -13,6 +15,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Arrays;
+import java.util.List;
 
 /**
  * @author housirvip
@@ -23,6 +26,7 @@ public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
     private final VendorRepository vendorRepository;
+    private final AddressRepository addressRepository;
 
     @Value("${user.role}")
     private UserRole[] initRole;
@@ -67,5 +71,21 @@ public class UserServiceImpl implements UserService {
     @Override
     public Vendor update(Vendor vendor) {
         return vendorRepository.save(vendor);
+    }
+
+    @Override
+    public Address update(Address address) {
+        addressRepository.findByIdAndUser(address.getId(), address.getUser()).ifPresentOrElse(a -> {
+            addressRepository.save(address);
+        }, () -> {
+            address.setId(null);
+            addressRepository.save(address);
+        });
+        return address;
+    }
+
+    @Override
+    public List<Address> getAddress(User user) {
+        return addressRepository.findByUser(user);
     }
 }

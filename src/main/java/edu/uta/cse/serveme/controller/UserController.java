@@ -2,6 +2,7 @@ package edu.uta.cse.serveme.controller;
 
 import edu.uta.cse.serveme.base.BaseResponse;
 import edu.uta.cse.serveme.base.ResultResponse;
+import edu.uta.cse.serveme.entity.Address;
 import edu.uta.cse.serveme.entity.User;
 import edu.uta.cse.serveme.entity.UserRole;
 import edu.uta.cse.serveme.entity.Vendor;
@@ -9,6 +10,8 @@ import edu.uta.cse.serveme.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 /**
  * @author housirvip
@@ -45,5 +48,16 @@ public class UserController {
         }
         vendor.setUser(user);
         return new ResultResponse<>(userService.update(vendor));
+    }
+
+    @GetMapping(value = "/address")
+    public BaseResponse<List<Address>> getAddress(Authentication auth) {
+        return new ResultResponse<>(userService.getAddress((User) auth.getDetails()));
+    }
+
+    @PutMapping(value = "/address")
+    public BaseResponse<Address> putAddress(@RequestBody Address address, Authentication auth) {
+        address.setUser((User) auth.getDetails());
+        return new ResultResponse<>(userService.update(address));
     }
 }
