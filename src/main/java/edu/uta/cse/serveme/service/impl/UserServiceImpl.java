@@ -75,17 +75,30 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public Address update(Address address) {
-        addressRepository.findByIdAndUser(address.getId(), address.getUser()).ifPresentOrElse(a -> {
-            addressRepository.save(address);
-        }, () -> {
-            address.setId(null);
-            addressRepository.save(address);
-        });
+        addressRepository.findByIdAndUser(address.getId(), address.getUser()).ifPresentOrElse(
+                a -> addressRepository.save(address),
+                () -> {
+                    address.setId(null);
+                    addressRepository.save(address);
+                });
         return address;
     }
 
     @Override
     public List<Address> getAddress(User user) {
         return addressRepository.findByUser(user);
+    }
+
+    @Override
+    public Address deleteAddress(Address address) {
+        addressRepository.findByIdAndUser(address.getId(), address.getUser()).ifPresentOrElse(
+                a -> {
+                    a.setUser(null);
+                    addressRepository.save(a);
+                },
+                () -> {
+                    throw new RuntimeException(ErrorMessage.ADDRESS_NOT_FOUND);
+                });
+        return address;
     }
 }

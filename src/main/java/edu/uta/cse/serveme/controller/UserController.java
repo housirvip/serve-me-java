@@ -60,4 +60,12 @@ public class UserController {
         address.setUser((User) auth.getDetails());
         return new ResultResponse<>(userService.update(address));
     }
+
+    @DeleteMapping(value = "/address/{id}")
+    public BaseResponse<Address> deleteAddress(@PathVariable Long id, Authentication auth) {
+        Address address = new Address();
+        address.setId(id);
+        address.setUser((User) auth.getDetails());
+        return new ResultResponse<>(userService.deleteAddress(address));
+    }
 }

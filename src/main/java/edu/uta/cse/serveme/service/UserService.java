@@ -74,4 +74,11 @@ public interface UserService {
      * @return List
      */
     List<Address> getAddress(User user);
+
+    /**
+     * delete one address
+     * @param address User
+     * @return Address
+     */
+    Address deleteAddress(Address address);
 }
