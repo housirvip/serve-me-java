@@ -1,5 +1,6 @@
 package edu.uta.cse.serveme.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
@@ -19,7 +20,10 @@ public class Address {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private Long uid;
+    @JoinColumn
+    @JsonBackReference
+    @ManyToOne(fetch = FetchType.LAZY)
+    private User user;
 
     private String state;
 

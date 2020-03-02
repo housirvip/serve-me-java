@@ -20,9 +20,7 @@ public class ErrorMessage {
     public static final String PHONE_EXIST = "PHONE_EXIST";
 
     public static final String USER_NOT_FOUND = "USER_NOT_FOUND";
-    public static final String USER_LEVEL_LIMIT = "USER_LEVEL_LIMIT";
-    public static final String USER_GROUP_LIMIT = "USER_GROUP_LIMIT";
-
+    public static final String VENDOR_NOT_FOUND = "VENDOR_NOT_FOUND";
     public static final String ORDER_NOT_FOUND = "ORDER_NOT_FOUND";
     public static final String BID_NOT_FOUND = "BID_NOT_FOUND";
 }

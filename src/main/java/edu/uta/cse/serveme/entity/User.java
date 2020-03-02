@@ -1,5 +1,6 @@
 package edu.uta.cse.serveme.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
@@ -37,6 +38,7 @@ public class User {
     @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     private Integer points;
 
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private String firebaseUid;
 
     private String photoUrl;
@@ -45,16 +47,14 @@ public class User {
 
     private String fcmToken;
 
-    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private Address address;
+    @JsonBackReference
+    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
+    private List<Address> address;
 
     @Enumerated(EnumType.STRING)
     @Fetch(value = FetchMode.SUBSELECT)
     @ElementCollection(targetClass = UserRole.class, fetch = FetchType.EAGER)
     private List<UserRole> role;
-
-    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private Vendor vendor;
 
     @PrePersist
     protected void onCreate() {

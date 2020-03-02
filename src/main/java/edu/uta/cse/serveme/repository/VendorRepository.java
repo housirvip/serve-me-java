@@ -1,5 +1,6 @@
 package edu.uta.cse.serveme.repository;
 
+import edu.uta.cse.serveme.entity.User;
 import edu.uta.cse.serveme.entity.Vendor;
 import org.springframework.data.repository.CrudRepository;
 
@@ -27,10 +28,10 @@ public interface VendorRepository extends CrudRepository<Vendor, Long> {
     Optional<Vendor> findByEmail(String email);
 
     /**
-     * find vendor by uid
+     * find vendor by user
      *
-     * @param uid Long
+     * @param user Long
      * @return Vendor
      */
-//    Optional<Vendor> findByUid(Long uid);
+    Optional<Vendor> findByUser(User user);
 }

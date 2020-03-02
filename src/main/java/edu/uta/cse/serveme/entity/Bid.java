@@ -22,17 +22,18 @@ public class Bid {
 
     private Long uid;
 
-    private Long oid;
-
     @JoinColumn
     @JsonBackReference
     @ManyToOne(fetch = FetchType.LAZY)
     private Order order;
 
-    private Integer price;
+    @Column(precision = 18, scale = 2)
+    private Float price;
 
     @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     private Date createTime;
+
+    private String description;
 
     @PrePersist
     protected void onCreate() {

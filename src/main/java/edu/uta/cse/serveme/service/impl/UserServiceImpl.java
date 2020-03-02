@@ -54,6 +54,11 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public Vendor findVendorByUser(User user) {
+        return vendorRepository.findByUser(user).orElseThrow(() -> new RuntimeException(ErrorMessage.VENDOR_NOT_FOUND));
+    }
+
+    @Override
     public User update(User user) {
         user.setFirebaseUid(null);
         return userRepository.save(user);

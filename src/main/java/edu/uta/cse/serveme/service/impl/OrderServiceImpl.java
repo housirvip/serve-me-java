@@ -1,9 +1,7 @@
 package edu.uta.cse.serveme.service.impl;
 
 import edu.uta.cse.serveme.base.ErrorMessage;
-import edu.uta.cse.serveme.entity.Bid;
-import edu.uta.cse.serveme.entity.Order;
-import edu.uta.cse.serveme.entity.OrderStatus;
+import edu.uta.cse.serveme.entity.*;
 import edu.uta.cse.serveme.repository.BidRepository;
 import edu.uta.cse.serveme.repository.OrderRepository;
 import edu.uta.cse.serveme.service.OrderService;
@@ -21,19 +19,21 @@ public class OrderServiceImpl implements OrderService {
     private final BidRepository bidRepository;
 
     @Override
-    public Order findOrderById(Long id) {
+    public Order findById(Long id) {
         return orderRepository.findById(id).orElseThrow(() -> new RuntimeException(ErrorMessage.ORDER_NOT_FOUND));
     }
 
     @Override
     public Order create(Order order) {
         order.setId(null);
+        order.setVendor(null);
+        order.setStatus(OrderStatus.Biding);
         return orderRepository.save(order);
     }
 
     @Override
     public Order update(Order order) {
-        orderRepository.findByIdAndUid(order.getId(), order.getUid()).ifPresentOrElse(
+        orderRepository.findByIdAndUser(order.getId(), order.getUser()).ifPresentOrElse(
                 result -> orderRepository.save(order),
                 () -> {
                     throw new RuntimeException(ErrorMessage.ORDER_NOT_FOUND);
@@ -42,22 +42,18 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public Order findOrderByIdAndUid(Long id, Long uid) {
-        return orderRepository.findByIdAndUid(id, uid).orElseThrow(() -> new RuntimeException(ErrorMessage.ORDER_NOT_FOUND));
+    public Order findOrder(Order order) {
+        return orderRepository.findByIdAndUser(order.getId(), order.getUser()).orElseThrow(() -> new RuntimeException(ErrorMessage.ORDER_NOT_FOUND));
     }
 
     @Override
     public Bid bid(Bid bid) {
         bid.setId(null);
-        bid.setOid(bid.getOid());
-        Order order = new Order();
-        order.setId(bid.getOid());
-        bid.setOrder(order);
         return bidRepository.save(bid);
     }
 
     @Override
-    public Bid confirm(Order order, Bid bid) {
+    public Bid confirm(Bid bid) {
         bidRepository.findById(bid.getId()).ifPresentOrElse(
                 b -> {
                     bid.setUid(b.getUid());
@@ -67,10 +63,13 @@ public class OrderServiceImpl implements OrderService {
                     throw new RuntimeException(ErrorMessage.BID_NOT_FOUND);
                 }
         );
-        orderRepository.findByIdAndUid(order.getId(), order.getUid()).ifPresentOrElse(
+        Order order = bid.getOrder();
+        orderRepository.findByIdAndUser(order.getId(), order.getUser()).ifPresentOrElse(
                 o -> {
+                    Vendor vendor = new Vendor();
+                    vendor.setId(bid.getUid());
+                    o.setVendor(vendor);
                     o.setPrice(bid.getPrice());
-                    o.setVid(bid.getUid());
                     o.setStatus(OrderStatus.Pending);
                     orderRepository.save(o);
                 }, () -> {
@@ -82,7 +81,7 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public Order pay(Order order) {
-        orderRepository.findByIdAndUid(order.getId(), order.getUid()).ifPresentOrElse(
+        orderRepository.findByIdAndUser(order.getId(), order.getUser()).ifPresentOrElse(
                 o -> {
                     o.setStatus(OrderStatus.Processing);
                     orderRepository.save(o);
@@ -95,7 +94,7 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public Order finish(Order order) {
-        orderRepository.findByIdAndVid(order.getId(), order.getVid()).ifPresentOrElse(
+        orderRepository.findByIdAndVendor(order.getId(), order.getVendor()).ifPresentOrElse(
                 o -> {
                     o.setStatus(OrderStatus.Finished);
                     orderRepository.save(o);

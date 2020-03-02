@@ -20,11 +20,21 @@ public class Order {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private Long uid;
+    @OneToOne(fetch = FetchType.LAZY)
+    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
+    private User user;
 
-    private Long vid;
+    @OneToOne(fetch = FetchType.LAZY)
+    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
+    private Vendor vendor;
 
-    private Integer price;
+    private String title;
+
+    private String description;
+
+    @Column(precision = 18, scale = 2)
+    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
+    private Float price;
 
     private Date time;
 
@@ -37,13 +47,14 @@ public class Order {
     @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     private Date updateTime;
 
-    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @OneToOne(fetch = FetchType.LAZY)
     private Address address;
 
     @Enumerated(EnumType.STRING)
+    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     private OrderStatus status;
 
-    @OneToMany(mappedBy = "order", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "order", fetch = FetchType.LAZY)
     private List<Bid> bids;
 
     @PrePersist

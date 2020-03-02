@@ -1,6 +1,8 @@
 package edu.uta.cse.serveme.repository;
 
 import edu.uta.cse.serveme.entity.Order;
+import edu.uta.cse.serveme.entity.User;
+import edu.uta.cse.serveme.entity.Vendor;
 import org.springframework.data.repository.CrudRepository;
 
 import java.util.Optional;
@@ -11,36 +13,20 @@ import java.util.Optional;
 public interface OrderRepository extends CrudRepository<Order, Long> {
 
     /**
-     * find order by customer id
+     * find order by order id and user
      *
-     * @param uid Long
+     * @param id   Long
+     * @param user User
      * @return User
      */
-    Optional<Order> findByUid(Long uid);
+    Optional<Order> findByIdAndUser(Long id, User user); ///
 
     /**
-     * find order by customer id
+     * find order by order id and vendor
      *
-     * @param id  Long
-     * @param uid Long
+     * @param id     Long
+     * @param vendor Vendor
      * @return User
      */
-    Optional<Order> findByIdAndUid(Long id, Long uid);
-
-    /**
-     * find order by vendor id
-     *
-     * @param vid Long
-     * @return User
-     */
-    Optional<Order> findByVid(Long vid);
-
-    /**
-     * find order by vendor id
-     *
-     * @param id  Long
-     * @param vid Long
-     * @return User
-     */
-    Optional<Order> findByIdAndVid(Long id, Long vid);
+    Optional<Order> findByIdAndVendor(Long id, Vendor vendor);
 }

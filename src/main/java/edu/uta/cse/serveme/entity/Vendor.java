@@ -1,5 +1,6 @@
 package edu.uta.cse.serveme.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
@@ -22,7 +23,9 @@ public class Vendor {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private Long uid;
+    @JsonBackReference
+    @OneToOne(fetch = FetchType.LAZY)
+    private User user;
 
     private String name;
 
@@ -31,9 +34,6 @@ public class Vendor {
     private String phone;
 
     private String photoUrl;
-
-    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private Address address;
 
     @Enumerated(EnumType.STRING)
     @Fetch(value = FetchMode.SUBSELECT)

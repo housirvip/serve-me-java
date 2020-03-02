@@ -31,15 +31,19 @@ public class UserController {
         return new ResultResponse<>(userService.update(user));
     }
 
+    @GetMapping(value = "/vendor")
+    public BaseResponse<Vendor> getVendor(Authentication auth) {
+        return new ResultResponse<>(userService.findVendorByUser((User) auth.getDetails()));
+    }
+
     @PutMapping(value = "/vendor")
-    public BaseResponse<Vendor> vendor(@RequestBody Vendor vendor, Authentication auth) {
+    public BaseResponse<Vendor> putVendor(@RequestBody Vendor vendor, Authentication auth) {
         User user = (User) auth.getDetails();
         if (!user.getRole().contains(UserRole.ROLE_VENDOR)) {
             user.getRole().add(UserRole.ROLE_VENDOR);
+            userService.update(user);
         }
-        vendor.setUid(user.getId());
-        user.setVendor(vendor);
-        userService.update(user);
-        return new ResultResponse<>(vendor);
+        vendor.setUser(user);
+        return new ResultResponse<>(userService.update(vendor));
     }
 }

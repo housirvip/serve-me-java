@@ -14,7 +14,7 @@ public interface OrderService {
      * @param id Long
      * @return User
      */
-    Order findOrderById(Long id);
+    Order findById(Long id);
 
     /**
      * create order where equal param user
@@ -33,13 +33,12 @@ public interface OrderService {
     Order update(Order order);
 
     /**
-     * find order where equal param id and uid
+     * find order where equal param order
      *
-     * @param id  Long
-     * @param uid Long
+     * @param order Order
      * @return Order
      */
-    Order findOrderByIdAndUid(Long id, Long uid);
+    Order findOrder(Order order);
 
     /**
      * bid to an order
@@ -52,11 +51,10 @@ public interface OrderService {
     /**
      * confirm an order
      *
-     * @param order Order
-     * @param bid   Bid
+     * @param bid Bid
      * @return Bid
      */
-    Bid confirm(Order order, Bid bid);
+    Bid confirm(Bid bid);
 
     /**
      * pay to the order

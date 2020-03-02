@@ -33,6 +33,14 @@ public interface UserService {
     User findUserByFirebaseUid(String firebaseUid);
 
     /**
+     * select a vendor where equal param user
+     *
+     * @param user User
+     * @return User
+     */
+    Vendor findVendorByUser(User user);
+
+    /**
      * update user where equal param user
      *
      * @param user User
