@@ -2,6 +2,9 @@ package edu.uta.cse.serveme.service;
 
 import edu.uta.cse.serveme.entity.Bid;
 import edu.uta.cse.serveme.entity.Order;
+import edu.uta.cse.serveme.entity.User;
+
+import java.util.List;
 
 /**
  * @author housirvip
@@ -39,6 +42,14 @@ public interface OrderService {
      * @return Order
      */
     Order findOrder(Order order);
+
+    /**
+     * find orders where equal param user
+     *
+     * @param user User
+     * @return List
+     */
+    List<Order> findOrdersByUser(User user);
 
     /**
      * bid to an order

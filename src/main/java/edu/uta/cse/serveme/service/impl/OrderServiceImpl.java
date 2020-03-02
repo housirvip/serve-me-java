@@ -8,6 +8,8 @@ import edu.uta.cse.serveme.service.OrderService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 /**
  * @author housirvip
  */
@@ -44,6 +46,11 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public Order findOrder(Order order) {
         return orderRepository.findByIdAndUser(order.getId(), order.getUser()).orElseThrow(() -> new RuntimeException(ErrorMessage.ORDER_NOT_FOUND));
+    }
+
+    @Override
+    public List<Order> findOrdersByUser(User user) {
+        return orderRepository.findByUser(user);
     }
 
     @Override

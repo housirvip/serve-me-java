@@ -5,6 +5,7 @@ import edu.uta.cse.serveme.entity.User;
 import edu.uta.cse.serveme.entity.Vendor;
 import org.springframework.data.repository.CrudRepository;
 
+import java.util.List;
 import java.util.Optional;
 
 /**
@@ -29,4 +30,20 @@ public interface OrderRepository extends CrudRepository<Order, Long> {
      * @return User
      */
     Optional<Order> findByIdAndVendor(Long id, Vendor vendor);
+
+    /**
+     * find orders by user
+     *
+     * @param user User
+     * @return List
+     */
+    List<Order> findByUser(User user);
+
+    /**
+     * find orders by vendor
+     *
+     * @param vendor Vendor
+     * @return List
+     */
+    List<Order> findByVendor(Vendor vendor);
 }

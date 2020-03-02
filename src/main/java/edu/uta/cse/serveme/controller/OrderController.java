@@ -13,6 +13,8 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 /**
  * @author housirvip
  */
@@ -30,6 +32,11 @@ public class OrderController {
         order.setId(id);
         order.setUser((User) auth.getDetails());
         return new ResultResponse<>(orderService.findOrder(order));
+    }
+
+    @GetMapping(value = "")
+    public BaseResponse<List<Order>> getByUser(Authentication auth) {
+        return new ResultResponse<>(orderService.findOrdersByUser((User) auth.getDetails()));
     }
 
     @PostMapping(value = "")
