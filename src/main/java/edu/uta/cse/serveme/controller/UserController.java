@@ -1,13 +1,17 @@
 package edu.uta.cse.serveme.controller;
 
 import edu.uta.cse.serveme.base.BaseResponse;
+import edu.uta.cse.serveme.base.PageResponse;
 import edu.uta.cse.serveme.base.ResultResponse;
 import edu.uta.cse.serveme.entity.Address;
 import edu.uta.cse.serveme.entity.User;
 import edu.uta.cse.serveme.entity.UserRole;
 import edu.uta.cse.serveme.entity.Vendor;
 import edu.uta.cse.serveme.service.UserService;
+import edu.uta.cse.serveme.specification.VendorSpecification;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
@@ -48,6 +52,12 @@ public class UserController {
         }
         vendor.setUser(user);
         return new ResultResponse<>(userService.update(vendor));
+    }
+
+    @GetMapping(value = "/vendors")
+    public BaseResponse<List<Vendor>> getVendors(VendorSpecification vendorSpecification, Pageable pageable, Authentication auth) {
+        Page<Vendor> vendors = userService.findVendors(vendorSpecification, pageable);
+        return new PageResponse<>(vendors.getContent(), vendors.getTotalElements());
     }
 
     @GetMapping(value = "/address")

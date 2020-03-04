@@ -54,6 +54,7 @@ public class Order {
     @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     private OrderStatus status;
 
+    @JsonIgnoreProperties("order")
     @OneToMany(mappedBy = "order", fetch = FetchType.LAZY)
     private List<Bid> bids;
 

@@ -9,8 +9,11 @@ import edu.uta.cse.serveme.repository.AddressRepository;
 import edu.uta.cse.serveme.repository.UserRepository;
 import edu.uta.cse.serveme.repository.VendorRepository;
 import edu.uta.cse.serveme.service.UserService;
+import edu.uta.cse.serveme.specification.VendorSpecification;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -100,5 +103,10 @@ public class UserServiceImpl implements UserService {
                     throw new RuntimeException(ErrorMessage.ADDRESS_NOT_FOUND);
                 });
         return address;
+    }
+
+    @Override
+    public Page<Vendor> findVendors(VendorSpecification vendorSpecification, Pageable pageable) {
+        return vendorRepository.findAll(vendorSpecification, pageable);
     }
 }

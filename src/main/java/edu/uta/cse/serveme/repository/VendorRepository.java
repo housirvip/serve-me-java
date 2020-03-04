@@ -2,6 +2,7 @@ package edu.uta.cse.serveme.repository;
 
 import edu.uta.cse.serveme.entity.User;
 import edu.uta.cse.serveme.entity.Vendor;
+import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.repository.CrudRepository;
 
 import java.util.Optional;
@@ -9,7 +10,7 @@ import java.util.Optional;
 /**
  * @author housirvip
  */
-public interface VendorRepository extends CrudRepository<Vendor, Long> {
+public interface VendorRepository extends CrudRepository<Vendor, Long>, JpaSpecificationExecutor<Vendor> {
 
     /**
      * find vendor by phone

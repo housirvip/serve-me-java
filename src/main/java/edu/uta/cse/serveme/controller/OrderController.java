@@ -1,6 +1,7 @@
 package edu.uta.cse.serveme.controller;
 
 import edu.uta.cse.serveme.base.BaseResponse;
+import edu.uta.cse.serveme.base.PageResponse;
 import edu.uta.cse.serveme.base.ResultResponse;
 import edu.uta.cse.serveme.entity.Bid;
 import edu.uta.cse.serveme.entity.Order;
@@ -8,7 +9,12 @@ import edu.uta.cse.serveme.entity.User;
 import edu.uta.cse.serveme.entity.Vendor;
 import edu.uta.cse.serveme.service.OrderService;
 import edu.uta.cse.serveme.service.UserService;
+import edu.uta.cse.serveme.specification.BidSpecification;
+import edu.uta.cse.serveme.specification.OrderSpecification;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
@@ -18,6 +24,7 @@ import java.util.List;
 /**
  * @author housirvip
  */
+@Slf4j
 @RestController
 @RequestMapping(value = "/order")
 @RequiredArgsConstructor
@@ -35,8 +42,17 @@ public class OrderController {
     }
 
     @GetMapping(value = "")
-    public BaseResponse<List<Order>> getByUser(Authentication auth) {
-        return new ResultResponse<>(orderService.findOrdersByUser((User) auth.getDetails()));
+    public BaseResponse<List<Order>> getOrdersByUser(OrderSpecification orderSpecification, Pageable pageable, Authentication auth) {
+        orderSpecification.setUser((User) auth.getDetails());
+        Page<Order> orders = orderService.findOrders(orderSpecification, pageable);
+        return new PageResponse<>(orders.getContent(), orders.getTotalElements());
+    }
+
+    @GetMapping(value = "bids")
+    public BaseResponse<List<Bid>> getBidsByUser(BidSpecification bidSpecification, Pageable pageable, Authentication auth) {
+        bidSpecification.setUid((Long) auth.getPrincipal());
+        Page<Bid> bids = orderService.findBids(bidSpecification, pageable);
+        return new PageResponse<>(bids.getContent(), bids.getTotalElements());
     }
 
     @PostMapping(value = "")

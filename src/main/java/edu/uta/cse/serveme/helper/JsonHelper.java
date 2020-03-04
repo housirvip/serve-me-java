@@ -1,4 +1,4 @@
-package edu.uta.cse.serveme.utils;
+package edu.uta.cse.serveme.helper;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.databind.JavaType;
@@ -16,7 +16,7 @@ import java.util.Map;
  * @author housirvip
  */
 @Slf4j
-public class JsonUtils {
+public class JsonHelper {
 
     private static ObjectMapper mapper = new ObjectMapper().setSerializationInclusion(JsonInclude.Include.NON_NULL);
 

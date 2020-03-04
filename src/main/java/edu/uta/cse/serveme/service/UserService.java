@@ -3,6 +3,9 @@ package edu.uta.cse.serveme.service;
 import edu.uta.cse.serveme.entity.Address;
 import edu.uta.cse.serveme.entity.User;
 import edu.uta.cse.serveme.entity.Vendor;
+import edu.uta.cse.serveme.specification.VendorSpecification;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 import java.util.List;
 
@@ -77,8 +80,18 @@ public interface UserService {
 
     /**
      * delete one address
+     *
      * @param address User
      * @return Address
      */
     Address deleteAddress(Address address);
+
+    /**
+     * find vendors by spec and pageable
+     *
+     * @param vendorSpecification VendorSpecification
+     * @param pageable            Pageable
+     * @return Page
+     */
+    Page<Vendor> findVendors(VendorSpecification vendorSpecification, Pageable pageable);
 }

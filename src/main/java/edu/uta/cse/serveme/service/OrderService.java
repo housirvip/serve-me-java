@@ -3,8 +3,9 @@ package edu.uta.cse.serveme.service;
 import edu.uta.cse.serveme.entity.Bid;
 import edu.uta.cse.serveme.entity.Order;
 import edu.uta.cse.serveme.entity.User;
-
-import java.util.List;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 
 /**
  * @author housirvip
@@ -46,10 +47,29 @@ public interface OrderService {
     /**
      * find orders where equal param user
      *
-     * @param user User
+     * @param user     User
+     * @param pageable Pageable
      * @return List
      */
-    List<Order> findOrdersByUser(User user);
+    Page<Order> findOrdersByUser(User user, Pageable pageable);
+
+    /**
+     * find orders where equal param user
+     *
+     * @param specification Specification
+     * @param pageable      Pageable
+     * @return List
+     */
+    Page<Order> findOrders(Specification<Order> specification, Pageable pageable);
+
+    /**
+     * find orders where equal param user
+     *
+     * @param specification Specification
+     * @param pageable      Pageable
+     * @return List
+     */
+    Page<Bid> findBids(Specification<Bid> specification, Pageable pageable);
 
     /**
      * bid to an order

@@ -6,9 +6,10 @@ import edu.uta.cse.serveme.repository.BidRepository;
 import edu.uta.cse.serveme.repository.OrderRepository;
 import edu.uta.cse.serveme.service.OrderService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
 
 /**
  * @author housirvip
@@ -48,8 +49,18 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public List<Order> findOrdersByUser(User user) {
-        return orderRepository.findByUser(user);
+    public Page<Order> findOrdersByUser(User user, Pageable pageable) {
+        return orderRepository.findByUser(user, pageable);
+    }
+
+    @Override
+    public Page<Order> findOrders(Specification<Order> specification, Pageable pageable) {
+        return orderRepository.findAll(specification, pageable);
+    }
+
+    @Override
+    public Page<Bid> findBids(Specification<Bid> specification, Pageable pageable) {
+        return bidRepository.findAll(specification, pageable);
     }
 
     @Override

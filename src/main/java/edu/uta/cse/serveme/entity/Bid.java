@@ -1,6 +1,5 @@
 package edu.uta.cse.serveme.entity;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
@@ -23,7 +22,7 @@ public class Bid {
     private Long uid;
 
     @JoinColumn
-    @JsonBackReference
+    @JsonIgnoreProperties("bids")
     @ManyToOne(fetch = FetchType.LAZY)
     private Order order;
 

@@ -1,6 +1,7 @@
 package edu.uta.cse.serveme.repository;
 
 import edu.uta.cse.serveme.entity.Bid;
+import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.repository.CrudRepository;
 
 import java.util.Optional;
@@ -8,7 +9,7 @@ import java.util.Optional;
 /**
  * @author housirvip
  */
-public interface BidRepository extends CrudRepository<Bid, Long> {
+public interface BidRepository extends CrudRepository<Bid, Long>, JpaSpecificationExecutor<Bid> {
 
     /**
      * find order by customer id
@@ -21,7 +22,7 @@ public interface BidRepository extends CrudRepository<Bid, Long> {
     /**
      * find order by customer id
      *
-     * @param id Long
+     * @param id  Long
      * @param uid Long
      * @return User
      */

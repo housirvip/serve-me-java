@@ -35,6 +35,14 @@ public class Vendor {
 
     private String photoUrl;
 
+    private Integer rate;
+
+    @Column(precision = 18, scale = 2)
+    private Float price;
+
+    @OneToOne(fetch = FetchType.LAZY)
+    private Address address;
+
     @Enumerated(EnumType.STRING)
     @Fetch(value = FetchMode.SUBSELECT)
     @ElementCollection(targetClass = VendorCategory.class, fetch = FetchType.LAZY)
