@@ -20,7 +20,8 @@ import java.util.List;
 @Data
 public class OrderSpecification implements Specification<Order> {
 
-    private User user;
+    private Long uid;
+    private Long vid;
     private String title;
     private Float priceMin;
     private Float priceMax;
@@ -38,8 +39,11 @@ public class OrderSpecification implements Specification<Order> {
                                  @Nonnull CriteriaQuery<?> criteriaQuery,
                                  @Nonnull CriteriaBuilder builder) {
         List<Predicate> list = new ArrayList<>();
-        if (user != null) {
-            list.add(builder.equal(root.get("user"), user));
+        if (uid != null) {
+            list.add(builder.equal(root.get("user").get("id"), uid));
+        }
+        if (vid != null) {
+            list.add(builder.equal(root.get("vendor").get("id"), vid));
         }
         if (title != null && !title.isEmpty()) {
             list.add(builder.like(builder.lower(root.get("title")), "%" + title + "%"));

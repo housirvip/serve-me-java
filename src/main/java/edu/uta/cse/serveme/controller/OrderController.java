@@ -42,8 +42,7 @@ public class OrderController {
     }
 
     @GetMapping(value = "")
-    public BaseResponse<List<Order>> getOrdersByUser(OrderSpecification orderSpecification, Pageable pageable, Authentication auth) {
-        orderSpecification.setUser((User) auth.getDetails());
+    public BaseResponse<List<Order>> getOrders(OrderSpecification orderSpecification, Pageable pageable, Authentication auth) {
         Page<Order> orders = orderService.findOrders(orderSpecification, pageable);
         return new PageResponse<>(orders.getContent(), orders.getTotalElements());
     }
