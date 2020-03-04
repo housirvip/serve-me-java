@@ -16,7 +16,9 @@ public enum OrderStatus {
     Waiting,
     Pending,
     Biding,
+    Accepting,
     Processing,
+    Refunding,
     Completed,
     Closed,
     Finished
