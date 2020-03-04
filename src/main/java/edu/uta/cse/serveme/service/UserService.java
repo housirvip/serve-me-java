@@ -42,9 +42,17 @@ public interface UserService {
      * select a vendor where equal param user
      *
      * @param user User
-     * @return User
+     * @return Vendor
      */
     Vendor findVendorByUser(User user);
+
+    /**
+     * select a vendor where equal param vid
+     *
+     * @param vid Long
+     * @return Vendor
+     */
+    Vendor findVendorById(Long vid);
 
     /**
      * update user where equal param user

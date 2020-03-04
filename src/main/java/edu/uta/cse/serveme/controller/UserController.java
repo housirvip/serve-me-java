@@ -43,6 +43,11 @@ public class UserController {
         return new ResultResponse<>(userService.findVendorByUser((User) auth.getDetails()));
     }
 
+    @GetMapping(value = "/vendor/{vid}")
+    public BaseResponse<Vendor> getVendor(@PathVariable Long vid) {
+        return new ResultResponse<>(userService.findVendorById(vid));
+    }
+
     @PutMapping(value = "/vendor")
     public BaseResponse<Vendor> putVendor(@RequestBody Vendor vendor, Authentication auth) {
         User user = (User) auth.getDetails();

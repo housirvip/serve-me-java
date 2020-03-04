@@ -66,6 +66,11 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public Vendor findVendorById(Long vid) {
+        return vendorRepository.findById(vid).orElseThrow(() -> new RuntimeException(ErrorMessage.VENDOR_NOT_FOUND));
+    }
+
+    @Override
     public User update(User user) {
         user.setFirebaseUid(null);
         return userRepository.save(user);
