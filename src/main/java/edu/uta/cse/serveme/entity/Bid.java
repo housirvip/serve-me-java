@@ -19,7 +19,7 @@ public class Bid {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private Long uid;
+    private Long vid;
 
     @JoinColumn
     @JsonIgnoreProperties("bids")

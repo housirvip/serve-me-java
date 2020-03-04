@@ -30,7 +30,8 @@ public class OrderSpecification implements Specification<Order> {
     private Date timeMax;
     private List<OrderStatus> status;
     private List<VendorCategory> category;
-    private Address address;
+    private String city;
+    private String state;
 
     @Override
     public Predicate toPredicate(@Nonnull Root<Order> root,
@@ -61,13 +62,11 @@ public class OrderSpecification implements Specification<Order> {
         if (category != null && !category.isEmpty()) {
             list.add(builder.in(root.get("category")).value(category));
         }
-        if (address != null) {
-            if (address.getCity() != null && !address.getCity().isEmpty()) {
-                list.add(builder.equal(root.get("address").get("city"), address.getCity()));
-            }
-            if (address.getState() != null && !address.getCity().isEmpty()) {
-                list.add(builder.equal(root.get("address").get("state"), address.getState()));
-            }
+        if (city != null) {
+            list.add(builder.equal(root.get("address").get("city"), city));
+        }
+        if (state != null) {
+            list.add(builder.equal(root.get("address").get("state"), state));
         }
         return builder.and(list.toArray(new Predicate[0]));
     }

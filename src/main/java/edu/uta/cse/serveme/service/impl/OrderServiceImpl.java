@@ -73,7 +73,7 @@ public class OrderServiceImpl implements OrderService {
     public Bid confirm(Bid bid) {
         bidRepository.findById(bid.getId()).ifPresentOrElse(
                 b -> {
-                    bid.setUid(b.getUid());
+                    bid.setVid(b.getVid());
                     bid.setPrice(b.getPrice());
                 },
                 () -> {
@@ -84,7 +84,7 @@ public class OrderServiceImpl implements OrderService {
         orderRepository.findByIdAndUser(order.getId(), order.getUser()).ifPresentOrElse(
                 o -> {
                     Vendor vendor = new Vendor();
-                    vendor.setId(bid.getUid());
+                    vendor.setId(bid.getVid());
                     o.setVendor(vendor);
                     o.setPrice(bid.getPrice());
                     o.setStatus(OrderStatus.Pending);
