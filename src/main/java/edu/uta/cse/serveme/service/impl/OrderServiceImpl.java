@@ -29,7 +29,6 @@ public class OrderServiceImpl implements OrderService {
     public Order create(Order order) {
         order.setId(null);
         order.setVendor(null);
-        order.setStatus(OrderStatus.Biding);
         return orderRepository.save(order);
     }
 
