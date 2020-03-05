@@ -68,7 +68,6 @@ public class OrderController {
 
     @PutMapping(value = "bid")
     public BaseResponse<Bid> bid(@RequestBody Bid bid, Authentication auth) {
-        bid.setUid((Long) auth.getPrincipal());
         return new ResultResponse<>(orderService.bid(bid));
     }
 
