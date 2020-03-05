@@ -48,8 +48,7 @@ public class OrderController {
     }
 
     @GetMapping(value = "bids")
-    public BaseResponse<List<Bid>> getBidsByUser(BidSpecification bidSpecification, Pageable pageable, Authentication auth) {
-        bidSpecification.setUid((Long) auth.getPrincipal());
+    public BaseResponse<List<Bid>> getBidsByUser(BidSpecification bidSpecification, Pageable pageable) {
         Page<Bid> bids = orderService.findBids(bidSpecification, pageable);
         return new PageResponse<>(bids.getContent(), bids.getTotalElements());
     }
@@ -67,7 +66,8 @@ public class OrderController {
     }
 
     @PutMapping(value = "bid")
-    public BaseResponse<Bid> bid(@RequestBody Bid bid, Authentication auth) {
+    @PreAuthorize("hasRole('VENDOR')")
+    public BaseResponse<Bid> bid(@RequestBody Bid bid) {
         return new ResultResponse<>(orderService.bid(bid));
     }
 
