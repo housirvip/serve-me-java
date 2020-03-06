@@ -14,7 +14,7 @@ spring:
   jackson:
     default-property-inclusion: NON_NULL
     #    date-format: yyyy-MM-dd HH:mm:ss
-    time-zone: GMT-5
+    time-zone: GMT-6
     serialization:
       fail-on-empty-beans: false
   jpa:
