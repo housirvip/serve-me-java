@@ -16,7 +16,7 @@ public interface AddressRepository extends CrudRepository<Address, Long> {
      * find address by user
      *
      * @param user User
-     * @return User
+     * @return Address
      */
     List<Address> findByUser(User user);
 
@@ -25,7 +25,7 @@ public interface AddressRepository extends CrudRepository<Address, Long> {
      *
      * @param id   Long
      * @param user User
-     * @return User
+     * @return Address
      */
     Optional<Address> findByIdAndUser(Long id, User user);
 }

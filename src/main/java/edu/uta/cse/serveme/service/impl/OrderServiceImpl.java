@@ -71,22 +71,19 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public Bid confirm(Bid bid) {
+    public Bid confirm(Bid bid, User user) {
         bidRepository.findById(bid.getId()).ifPresentOrElse(
                 b -> {
-                    bid.setUid(b.getUid());
                     bid.setPrice(b.getPrice());
+                    bid.setOrder(b.getOrder());
                 },
                 () -> {
                     throw new RuntimeException(ErrorMessage.BID_NOT_FOUND);
                 }
         );
-        Order order = bid.getOrder();
-        orderRepository.findByIdAndUser(order.getId(), order.getUser()).ifPresentOrElse(
+        orderRepository.findByIdAndUser(bid.getOrder().getId(), user).ifPresentOrElse(
                 o -> {
-                    Vendor vendor = new Vendor();
-                    vendor.setId(bid.getUid());
-                    o.setVendor(vendor);
+                    o.setVendor(bid.getVendor());
                     o.setPrice(bid.getPrice());
                     o.setStatus(OrderStatus.Pending);
                     orderRepository.save(o);
@@ -121,5 +118,10 @@ public class OrderServiceImpl implements OrderService {
                 }
         );
         return order;
+    }
+
+    @Override
+    public Bid findBidById(Long id) {
+        return bidRepository.findById(id).orElseThrow(() -> new RuntimeException(ErrorMessage.BID_NOT_FOUND));
     }
 }

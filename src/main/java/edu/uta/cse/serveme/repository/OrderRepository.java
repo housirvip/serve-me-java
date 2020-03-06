@@ -21,7 +21,7 @@ public interface OrderRepository extends CrudRepository<Order, Long>, JpaSpecifi
      *
      * @param id   Long
      * @param user User
-     * @return User
+     * @return Order
      */
     Optional<Order> findByIdAndUser(Long id, User user); ///
 
@@ -30,7 +30,7 @@ public interface OrderRepository extends CrudRepository<Order, Long>, JpaSpecifi
      *
      * @param id     Long
      * @param vendor Vendor
-     * @return User
+     * @return Order
      */
     Optional<Order> findByIdAndVendor(Long id, Vendor vendor);
 
@@ -38,7 +38,7 @@ public interface OrderRepository extends CrudRepository<Order, Long>, JpaSpecifi
      * find orders by user
      *
      * @param user User
-     * @return List
+     * @return Orders
      */
     List<Order> findByUser(User user);
 
@@ -46,7 +46,7 @@ public interface OrderRepository extends CrudRepository<Order, Long>, JpaSpecifi
      * find orders by vendor
      *
      * @param vendor Vendor
-     * @return List
+     * @return Orders
      */
     List<Order> findByVendor(Vendor vendor);
 
@@ -55,7 +55,7 @@ public interface OrderRepository extends CrudRepository<Order, Long>, JpaSpecifi
      *
      * @param user     User
      * @param pageable Pageable
-     * @return Page
+     * @return Orders
      */
     Page<Order> findByUser(User user, Pageable pageable);
 }

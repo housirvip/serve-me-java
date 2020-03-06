@@ -80,12 +80,13 @@ public interface OrderService {
     Bid bid(Bid bid);
 
     /**
-     * confirm an order
+     * confirm an order, use bid and user to verify access
      *
-     * @param bid Bid
+     * @param bid  Bid
+     * @param user User
      * @return Bid
      */
-    Bid confirm(Bid bid);
+    Bid confirm(Bid bid, User user);
 
     /**
      * pay to the order
@@ -102,4 +103,12 @@ public interface OrderService {
      * @return Order
      */
     Order finish(Order order);
+
+    /**
+     * find bid by bid id
+     *
+     * @param id Long
+     * @return Bid
+     */
+    Bid findBidById(Long id);
 }

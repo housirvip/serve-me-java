@@ -19,10 +19,11 @@ public class Bid {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private Long uid;
+    @OneToOne(fetch = FetchType.LAZY)
+    private Vendor vendor;
 
     @JoinColumn
-    @JsonIgnoreProperties("bids")
+    @JsonIgnoreProperties(value = {"bids", "vendor"})
     @ManyToOne(fetch = FetchType.LAZY)
     private Order order;
 

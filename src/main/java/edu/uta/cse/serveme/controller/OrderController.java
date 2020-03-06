@@ -48,7 +48,7 @@ public class OrderController {
     }
 
     @GetMapping(value = "bids")
-    public BaseResponse<List<Bid>> getBidsByUser(BidSpecification bidSpecification, Pageable pageable) {
+    public BaseResponse<List<Bid>> getBids(BidSpecification bidSpecification, Pageable pageable) {
         Page<Bid> bids = orderService.findBids(bidSpecification, pageable);
         return new PageResponse<>(bids.getContent(), bids.getTotalElements());
     }
@@ -67,15 +67,15 @@ public class OrderController {
 
     @PutMapping(value = "bid")
     @PreAuthorize("hasRole('VENDOR')")
-    public BaseResponse<Bid> bid(@RequestBody Bid bid) {
+    public BaseResponse<Bid> bid(@RequestBody Bid bid, Authentication auth) {
+        Vendor vendor = userService.findVendorByUser((User) auth.getDetails());
+        bid.setVendor(vendor);
         return new ResultResponse<>(orderService.bid(bid));
     }
 
     @PutMapping(value = "confirm")
     public BaseResponse<Bid> confirm(@RequestBody Bid bid, Authentication auth) {
-        Order order = bid.getOrder();
-        order.setUser((User) auth.getDetails());
-        return new ResultResponse<>(orderService.confirm(bid));
+        return new ResultResponse<>(orderService.confirm(bid, (User) auth.getDetails()));
     }
 
     @PutMapping(value = "pay")
